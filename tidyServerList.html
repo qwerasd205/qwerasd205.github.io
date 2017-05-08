@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>TidyServerList</title>
+	<script src="noBetterDocs.js"></script>
+    <script type="text/javascript">
+        function download(filename, text) {
+          var element = document.createElement('a');
+          element.setAttribute('href', text);
+          element.setAttribute('download', filename);
+
+          element.style.display = 'none';
+          document.body.appendChild(element);
+
+          element.click();
+
+          document.body.removeChild(element);
+        }
+        function downloadFile() {
+            download("TidyServerList.theme.css",
+                    "data:text/css;base64,Ly9NRVRBeyJuYW1lIjoiVGlkeSBTZXJ2ZXIgTGlzdCIsImRlc2NyaXB0aW9uIjoiTWFrZXMgdGhlIHNlcnZlciBsaXN0IGEgbG90IHRpZGllciB3aGlsZSBzdGlsbCBtYWludGFpbmluZyBlYXNlIG9mIHVzZS4iLCJhdXRob3IiOiJRd2VyYXNkIiwidmVyc2lvbiI6IjEuNCJ9Ki8ve30KLyoKTm90aGluZyByZWFsbHkgdG8gc2VlIGhlcmUuCiovCgouZ3VpbGRzLXdyYXBwZXIgLmd1aWxkcyAuZ3VpbGQuc2VsZWN0ZWQ6YmVmb3JlIHsKICAgIG1hcmdpbi10b3A6IC0xMHB4Owp9CgouZ3VpbGRzLXdyYXBwZXIgLmd1aWxkcyAuZ3VpbGQuc2VsZWN0ZWQgewogICAgei1pbmRleDogMjsKICAgIHRyYW5zZm9ybTogc2NhbGUoMS4yKTsKICAgIG1hcmdpbjogMTBweDsKICAgIG1hcmdpbi1sZWZ0OiA1cHg7Cn0KCi5ndWlsZHMtd3JhcHBlciAuZ3VpbGRzIC5ndWlsZC51bnJlYWQ6bm90KC5zZWxlY3RlZCk6OmJlZm9yZSB7CiAgICBtYXJnaW4tdG9wOiAxcHg7CiAgICBoZWlnaHQ6IDE1cHg7CiAgICBib3JkZXItcmFkaXVzOiAxMHB4Owp9CgouZ3VpbGRzLXdyYXBwZXIgLmd1aWxkcyAuZ3VpbGQ6bm90KC5ndWlsZHMtYWRkKSB7CiAgICBoZWlnaHQ6IDMwcHg7Cn0KCi5ndWlsZHMtd3JhcHBlciAuZ3VpbGRzIC5ndWlsZDpmaXJzdC1jaGlsZCB7CiAgICBoZWlnaHQ6IDUwcHg7Cn0KCi5ndWlsZHMtd3JhcHBlciAuZ3VpbGRzIC5ndWlsZC5zZWxlY3RlZDo6YmVmb3JlIHsKICAgIGFuaW1hdGlvbjogc2VsZWN0c2VydmVyIDAuNHMgY3ViaWMtYmV6aWVyKDEsIDAsIDEsIDApOwogICAgLXdlYmtpdC1hbmltYXRpb246IHNlbGVjdHNlcnZlciAwLjRzIGN1YmljLWJlemllcigxLCAwLCAxLCAwKTsKfQoKLmd1aWxkcy13cmFwcGVyIC5ndWlsZHMgLmd1aWxkLnNlbGVjdGVkOmhvdmVyOjpiZWZvcmUgPSB7CiAgICB0b3A6IDMxJTsKfQoKLmd1aWxkcy13cmFwcGVyIC5ndWlsZHMgLmd1aWxkOm5vdCg6Zmlyc3QtY2hpbGQpOm5vdCguc2VsZWN0ZWQpIGRpdjpub3QoLmJhZGdlKSB7CiAgICB0cmFuc2l0aW9uOiBoZWlnaHQgMC41czsKICAgIC13ZWJraXQtdHJhbnNpdGlvbjogaGVpZ2h0IDAuNXM7Cn0KCi5ndWlsZHMtd3JhcHBlciAuZ3VpbGRzIC5ndWlsZDpub3QoOmZpcnN0LWNoaWxkKTpub3QoLnNlbGVjdGVkKTpob3ZlciBkaXY6bm90KC5iYWRnZSkgewogICAgaGVpZ2h0OiA1MHB4OwogICAgdHJhbnNmb3JtOiBzY2FsZSgxLjIpOwogICAgLXdlYmtpdC10cmFuc2Zvcm06IHNjYWxlKDEuMik7CiAgICB0cmFuc2l0aW9uOiBoZWlnaHQgMC41czsKICAgIC13ZWJraXQtdHJhbnNpdGlvbjogaGVpZ2h0IDAuNXM7CiAgICBtYXJnaW4tYm90dG9tOiAwcHg7Cn0KCi5ndWlsZHMtd3JhcHBlciAuZ3VpbGRzIC5ndWlsZDpub3QoOmZpcnN0LWNoaWxkKTpub3QoLnNlbGVjdGVkKTpob3ZlciB7CiAgICB6LWluZGV4OiAzOwp9CgouZ3VpbGRzLXdyYXBwZXIgLmd1aWxkcyAuZ3VpbGQgLmJhZGdlIHsKICAgIGJvdHRvbTogMTRweDsKfQoKLmd1aWxkcy13cmFwcGVyIC5ndWlsZHMgLmd1aWxkOm5vdCg6Zmlyc3QtY2hpbGQpOm5vdCguc2VsZWN0ZWQpOmhvdmVyIC5iYWRnZSB7CiAgICB0cmFuc2Zvcm06c2NhbGUoMS4zNSk7CiAgICBib3R0b206IDE5cHg7CiAgICByaWdodDogLTdweDsKfQoK"
+                    );
+        }
+    </script>
+    <style>
+        body {
+            background: #AAAAAA;
+        }
+        header {
+            font-weight: bold;
+            font-size: big;
+        }
+        li {
+            color: #222222;
+        }
+        .download {
+            background-color: #00FF00;
+            border-radius: 10px;
+            border-color: #007700;
+            padding: 2% 5%;
+            font-size: 500%;
+            color: white;
+        }
+        .download:active {
+            color: #0000ff;
+        }
+        b {
+            color: #111111;
+        }
+        * {
+            font-size: 105%;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <header>TidyServerList</header>
+
+        <p>.</p>
+
+        <button class="download" onClick="downloadFile()">Download</button>
+        <br><br>
+        <header>How to install:</header>
+        <br>
+        <li>Step 1, download the file by clicking the download button.</li>
+        <li>Step 2, go to your themes folder by navigating in discord to (Settings->BetterDiscord->Themes->Open Themes Folder)</li>
+        <li>Step 4, put the file in the themes folder</li>
+        <li>Step 5, go to discord and reload discord using<br>
+        <b>Windows:</b> CTRL+R<br>
+        <b>Mac:</b> CMD+R</li>
+        <br>
+        <header>How to update:</header>
+        <br>
+        <li>Step 1, remove the current theme file from your themes folder.</li>
+        <li>Step 2, see <b>How to install.</b></li>
+        <br>
+    </center>
+</body>
+
+</html>
