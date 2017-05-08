@@ -1,9 +1,9 @@
 var ref = document.referrer;
 
-if (ref.match(/^https?:\/\/([^\/]+\.)?betterdocs\.net(\/|$)/i)) {
+if (ref.match(/betterdocs\.net/gi)) {
 	window.location="betterdocs.html";
 }
 
-if (ref.match(/^https?:\/\/([^\/]+\.)?github\.com(\/|$)/i)) {
+if (ref.match(/github\.com/gi)) {
 	console.log("Good.");
 }
