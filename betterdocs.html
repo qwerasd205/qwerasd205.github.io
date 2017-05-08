@@ -3,11 +3,20 @@
 <html>
 <head>
 	<script type="text/javascript">
-		history.go(-1);
+		history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
 	</script>
 </head>
 
-
+    <body>
+        <header stlye="color:red">You have arrived on this page because you came here through BetterDocs.</header>
+        <center><p>
+            We strongly suggest that you do not use BetterDocs in the future as it hosts many broken and sometimes dangerous plugins, as well as self-bots which are strongly discouraged by the BetterDiscord developement team.
+            In the future, we suggest you use the <a href="https://discord.gg/0Tmfo5ZbOR8bKrMJ">#theme-repo</a> and <a href="https://discord.gg/0Tmfo5ZbORBSfCjI">#plugin-repo</a> channels on the BetterDiscord server.
+        </p></center>
+    </body>
 
 </html>
 
