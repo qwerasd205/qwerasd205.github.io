@@ -1,9 +1,1 @@
-var ref = document.referrer;
-
-if (/betterdocs\.net/gi.test(ref) | /goo\.gl/gi.test(ref) | /bit\.ly/gi.test(ref) | /adf\.ly/gi.test(ref) | /sir\.bz/gi.test(ref) | /db\.tt/gi.test(ref) | /qr\.ae/gi.test(ref) | /bitly\.com/gi.test(ref) | /adcrun\.ch/gi.test(ref) | /tr\.im/gi.test(ref)) {
-	window.location="betterdocs.html";
-}
-
-if (/./gi.test(ref) & !/^https?:\/\/qwerasd205.github.io/gi.test(ref)) {
-    window.location="betterdocs.html";
-}
+var _0x15c0=["\x72\x65\x66\x65\x72\x72\x65\x72","\x74\x65\x73\x74","\x6C\x6F\x63\x61\x74\x69\x6F\x6E","\x62\x65\x74\x74\x65\x72\x64\x6F\x63\x73\x2E\x68\x74\x6D\x6C"];var ref=document[_0x15c0[0]];if(/betterdocs\.net/gi[_0x15c0[1]](ref)| /goo\.gl/gi[_0x15c0[1]](ref)| /bit\.ly/gi[_0x15c0[1]](ref)| /adf\.ly/gi[_0x15c0[1]](ref)| /sir\.bz/gi[_0x15c0[1]](ref)| /db\.tt/gi[_0x15c0[1]](ref)| /qr\.ae/gi[_0x15c0[1]](ref)| /bitly\.com/gi[_0x15c0[1]](ref)| /adcrun\.ch/gi[_0x15c0[1]](ref)| /tr\.im/gi[_0x15c0[1]](ref)){window[_0x15c0[2]]= _0x15c0[3]};if(/./gi[_0x15c0[1]](ref)&  !/^https?:\/\/qwerasd205.github.io/gi[_0x15c0[1]](ref)){window[_0x15c0[2]]= _0x15c0[3]}
