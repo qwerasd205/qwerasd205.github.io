@@ -55,32 +55,51 @@
             border-top: 1px solid #000000;
             font-size: small;
         }
+        .confirm {
+            background-color: #00FF00;
+            border-radius: 10px;
+            border-color: #007700;
+        }
+        .deny {
+            background-color: #FF0000;
+            border-radius: 10px;
+            border-color: #770000;
+        }
     </style>
 </head>
 
 <body>
-    <center>
-        <header>TidyServerList</header>
+    <div class="warn">
+        <center>
+            <header>Quick question.</header>
+            Did you come here from BetterDocs?<br>
+            <button class="confirm" onClick="betterdocs()">Yes.</ button> <button class="deny" onClick="showContent()">No.</button>
+        </center>
+    </div>
+    <div class="content" style="display:none">
+        <center>
+            <header>TidyServerList</header>
 
-        <p>TidyServerList is a theme for BetterDiscord that makes the server list a lot cleaner and tidier, improved functionality in reduced space!</p>
+            <p>TidyServerList is a theme for BetterDiscord that makes the server list a lot cleaner and tidier, improved functionality in reduced space!</p>
 
-        <button class="download" onClick="downloadFile()">Download</button>
-        <br><br>
-        <header>How to install:</header>
-        <br>
-        <li>Step 1, download the file by clicking the download button.</li>
-        <li>Step 2, go to your themes folder by navigating in discord to (Settings->BetterDiscord->Themes->Open Themes Folder)</li>
-        <li>Step 4, put the file in the themes folder</li>
-        <li>Step 5, go to discord and reload discord using<br>
-        <b>Windows:</b> CTRL+R<br>
-        <b>Mac:</b> CMD+R</li>
-        <br>
-        <header>How to update:</header>
-        <br>
-        <li>Step 1, remove the current theme file from your themes folder.</li>
-        <li>Step 2, see <b>How to install.</b></li>
-        <br>
-    </center>
+            <button class="download" onClick="downloadFile()">Download</button>
+            <br><br>
+            <header>How to install:</header>
+            <br>
+            <li>Step 1, download the file by clicking the download button.</li>
+            <li>Step 2, go to your themes folder by navigating in discord to (Settings->BetterDiscord->Themes->Open Themes Folder)</li>
+            <li>Step 4, put the file in the themes folder</li>
+            <li>Step 5, go to discord and reload discord using<br>
+            <b>Windows:</b> CTRL+R<br>
+            <b>Mac:</b> CMD+R</li>
+            <br>
+            <header>How to update:</header>
+            <br>
+            <li>Step 1, remove the current theme file from your themes folder.</li>
+            <li>Step 2, see <b>How to install.</b></li>
+            <br>
+        </center>
+    </div>
     <footer>
         Copyright © 2017, Qwerasd | All rights reserved | DO NOT DISTRIBUTE
     </footer>
