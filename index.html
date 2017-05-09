@@ -4,10 +4,79 @@
 <head>
 	<title>Qwerasd</title>
 	<script src="noBetterDocs.js"></script>
+    <script type="text/javascript">
+        function betterdocs() {
+            window.location="betterdocs.html";
+        }
+        function showContent() {
+            document.querySelector(".warn").style.display = "none";
+            document.querySelector(".content").style.display = "block";
+        }
+    </script>
+    <style>
+        body {
+            background: #AAAAAA;
+        }
+        header {
+            font-weight: bold;
+            font-size: big;
+        }
+        li {
+            color: #222222;
+        }
+        .download {
+            background-color: #00FF00;
+            border-radius: 10px;
+            border-color: #007700;
+            padding: 2% 5%;
+            font-size: 500%;
+            color: white;
+        }
+        .confirm {
+            background-color: #00FF00;
+            border-radius: 10px;
+            border-color: #007700;
+        }
+        .deny {
+            background-color: #FF0000;
+            border-radius: 10px;
+            border-color: #770000;
+        }
+        b {
+            color: #111111;
+        }
+        * {
+            font-size: 105%;
+        }
+        footer {
+            border-top: 1px solid #000000;
+            font-size: small;
+        }
+        .warn {
+            padding-top:10%;
+        }
+    </style>
 </head>
 
 <body>
-	<a> There's nothing to see here, move along. </a>
+    <div class="warn">
+        <center>
+            <header>Quick question.</header>
+            Did you come here from BetterDocs?<br>
+            <button class="confirm" onClick="betterdocs()">Yes.</ button> <button class="deny" onClick="showContent()">No.</button>
+        </center>
+    </div>
+    <div class="content" style="display:none">
+        <center>
+            <header>qwerasd205.github.io</header>
+
+            <p>This site is used to host some stuff and stuff.</p>
+            <br><br>
+        </center>
+        <footer>
+            Copyright © 2017, Qwerasd | All rights reserved | DO NOT DISTRIBUTE
+        </footer>
+    </div>
 </body>
 
 </html>
