@@ -30,3 +30,22 @@ footer {
 .content {
     margin: 2em;
 }
+a.download {
+    background: limegreen;
+    color: white;
+    padding: 1em;
+    box-shadow: 1px 1px 3px white;
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px green;
+    border-radius: 5px;
+    border: 2px solid rgb(0, 242, 0);
+}
+a.download:hover {
+    background: rgb(0, 242, 0);
+    border-color: lime;
+}
+a.download:active {
+    background: rgb(0, 182, 0);
+    border-color: limegreen;
+}
