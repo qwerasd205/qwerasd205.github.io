@@ -1,0 +1,71 @@
+//META{"name":"Compact Server List","description":"A compact server list to save space for those with a lot of servers","author":"Qwerasd","version":"1.0.1"}*//{}
+
+/* ----------------------------------------------------------------------- */
+
+.guildsWrapper-5TJh6A {
+    overflow: visible;
+}
+
+.guilds-1q_RqH::-webkit-scrollbar {
+    display: none;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ.selected-ML3OIq::before {
+    margin-top: -10px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:first-child::before {
+    margin-top: -20px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ.selected-ML3OIq {
+    z-index: 2;
+    transform: scale(1.1);
+    margin: 10px;
+    margin-left: 5px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ.unread-qLkInr:not(.selected-ML3OIq)::before {
+    margin-top: 5px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:not(.guildsAdd-21_IdK) {
+    height: 30px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:first-child {
+    height: 50px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ.selected-ML3OIq::before {
+    animation: selectserver 0.4s cubic-bezier(1, 0, 1, 0);
+    -webkit-animation: selectserver 0.4s cubic-bezier(1, 0, 1, 0);
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:not(:first-child):not(.selected) div:not(.badge-1GsMF2) {
+    transition: height 0.5s;
+    -webkit-transition: height 0.5s;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:not(:first-child):not(.selected):hover div:not(.badge-1GsMF2) {
+    height: 50px;
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    transition: height 0.5s;
+    -webkit-transition: height 0.5s;
+    margin-bottom: 0px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:not(:first-child):not(.selected):hover {
+    z-index: 3;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ .badge-1GsMF2 {
+    bottom: 14px;
+}
+
+.guildsWrapper-5TJh6A .guilds-1q_RqH .guild-1EfMGQ:not(:first-child):not(.selected):hover .badge-1GsMF2 {
+    transform:scale(1.35);
+    bottom: 19px;
+    right: -7px;
+}
