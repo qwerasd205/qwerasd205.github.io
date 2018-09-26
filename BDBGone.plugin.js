@@ -8,7 +8,7 @@ class BDBGone {
         return "Completely (or partially) remove BD from your system.";
     }
     getVersion() {
-        return "0.0.2";
+        return "0.0.1";
     }
     getAuthor() {
         return "Qwerasd";
@@ -21,12 +21,10 @@ class BDBGone {
         let platform = process.platform;
         let dataPath = (platform === "win32" ? process.env.APPDATA : platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.config") + "/BetterDiscord/";
         window.BDBGone_BDPath = dataPath;
-        window.BDBGone_BDOldPath = path.join(dataPath, '/../BDBGone/');
         let electron = window.require('electron');
         let userData = electron.remote.app.getPath('userData');
         let version = fs.readdirSync(userData).filter(e => parseInt(e) + 1)[0];
         window.BDBGone_DCPath = path.join(userData, version, '/');
-        window.BDBGone_DCOldPath = path.join(userData, '/BDBGone/');
 
         window.BDBGone_rimraf = function (dir_path) {
             if (dir_path.length < 10) return; // Just in case something goes wrong as it's trying to delete / or something stupid like that.
@@ -38,36 +36,30 @@ class BDBGone {
                     if (fs.lstatSync(entry_path).isDirectory() && path.extname(entry_path) !== '.asar') {
                         BDBGone_rimraf(entry_path);
                     } else {
-                        try {
-                            fs.unlinkSync(entry_path);
-                        } finally {}
+                        fs.unlinkSync(entry_path);
                     }
                 });
-                try {
-                    fs.rmdirSync(dir_path);
-                } finally {}
+                fs.rmdirSync(dir_path);
             }
         };
 
         window.removeBD = function () {
             if (confirm('Are you absolutely sure?')) {
                 let electron = window.require('electron');
-                let fs       = window.require('fs');
+
 
                 if (!document.getElementById('BDBGone_keepData').checked) {
                     BdApi.showToast('Deleting BetterDiscord files...', {
                         type: 'danger'
                     });
-                    if (fs.existsSync(BDBGone_BDOldPath)) BDBGone_rimraf(BDBGone_BDOldPath);
-                    try { fs.renameSync(BDBGone_BDPath, BDBGone_BDOldPath); } finally {}
+                    BDBGone_rimraf(BDBGone_BDPath);
                 }
 
 
                 BdApi.showToast('Removing link from Discord...', {
                     type: 'danger'
                 });
-                if (fs.existsSync(BDBGone_DCOldPath)) BDBGone_rimraf(BDBGone_DCOldPath);
-                try { fs.renameSync(BDBGone_DCPath, BDBGone_DCOldPath); } finally {}
+                BDBGone_rimraf(BDBGone_DCPath);
 
 
                 BdApi.showToast('Restarting...', {
