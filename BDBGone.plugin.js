@@ -36,10 +36,14 @@ class BDBGone {
                     if (fs.lstatSync(entry_path).isDirectory() && path.extname(entry_path) !== '.asar') {
                         BDBGone_rimraf(entry_path);
                     } else {
-                        fs.unlinkSync(entry_path);
+                        try {
+                            fs.unlinkSync(entry_path);
+                        } catch (e) {}
                     }
                 });
-                fs.rmdirSync(dir_path);
+                try {
+                    fs.rmdirSync(dir_path);
+                } catch (e) {}
             }
         };
 
