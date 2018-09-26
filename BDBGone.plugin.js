@@ -8,7 +8,7 @@ class BDBGone {
         return "Completely (or partially) remove BD from your system.";
     }
     getVersion() {
-        return "0.0.1";
+        return "0.0.2";
     }
     getAuthor() {
         return "Qwerasd";
@@ -24,7 +24,7 @@ class BDBGone {
         let electron = window.require('electron');
         let userData = electron.remote.app.getPath('userData');
         let version = fs.readdirSync(userData).filter(e => parseInt(e) + 1)[0];
-        window.BDBGone_DCPath = path.join(userData, version, '/');
+        window.BDBGone_DCPath = path.join(userData, version, '/discord_desktop_core/');
 
         window.BDBGone_rimraf = function (dir_path) {
             if (dir_path.length < 10) return; // Just in case something goes wrong as it's trying to delete / or something stupid like that.
