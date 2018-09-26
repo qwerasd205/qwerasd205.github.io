@@ -38,10 +38,14 @@ class BDBGone {
                     if (fs.lstatSync(entry_path).isDirectory() && path.extname(entry_path) !== '.asar') {
                         BDBGone_rimraf(entry_path);
                     } else {
-                        fs.unlinkSync(entry_path);
+                        try {
+                            fs.unlinkSync(entry_path);
+                        } finally {}
                     }
                 });
-                fs.rmdirSync(dir_path);
+                try {
+                    fs.rmdirSync(dir_path);
+                } finally {}
             }
         };
 
@@ -55,7 +59,7 @@ class BDBGone {
                         type: 'danger'
                     });
                     if (fs.existsSync(BDBGone_BDOldPath)) BDBGone_rimraf(BDBGone_BDOldPath);
-                    fs.renameSync(BDBGone_BDPath, BDBGone_BDOldPath);
+                    try { fs.renameSync(BDBGone_BDPath, BDBGone_BDOldPath); } finally {}
                 }
 
 
@@ -63,7 +67,7 @@ class BDBGone {
                     type: 'danger'
                 });
                 if (fs.existsSync(BDBGone_DCOldPath)) BDBGone_rimraf(BDBGone_DCOldPath);
-                fs.renameSync(BDBGone_DCPath, BDBGone_DCOldPath);
+                try { fs.renameSync(BDBGone_DCPath, BDBGone_DCOldPath); } finally {}
 
 
                 BdApi.showToast('Restarting...', {
