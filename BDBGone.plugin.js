@@ -63,7 +63,7 @@ class BDBGone {
                 BdApi.showToast('Removing link from Discord...', {
                     type: 'danger'
                 });
-                fs.writeFile(BDBGone_DCPath, "module.exports = require('./core.asar')");
+                fs.writeFileSync(BDBGone_DCPath, "module.exports = require('./core.asar')");
 
                 BdApi.showToast('Restarting...', {
                     type: 'warn'
