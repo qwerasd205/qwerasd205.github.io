@@ -8,7 +8,7 @@ class BDBGone {
         return "Completely (or partially) remove BD from your system.";
     }
     getVersion() {
-        return "0.0.1";
+        return "0.0.2";
     }
     getAuthor() {
         return "Qwerasd";
@@ -36,10 +36,14 @@ class BDBGone {
                     if (fs.lstatSync(entry_path).isDirectory() && path.extname(entry_path) !== '.asar') {
                         BDBGone_rimraf(entry_path);
                     } else {
-                        fs.unlinkSync(entry_path);
+                        const newName = path.join(path.dirname(entry_path), 'DELETEME');
+                        fs.renameSync(entry_path, newName);
+                        fs.unlinkSync(newName);
                     }
                 });
-                fs.rmdirSync(dir_path);
+                const newName = path.join(dir_path, '/../DELETEME/');
+                fs.renameSync(dir_path, newName);
+                fs.rmdirSync(newName);
             }
         };
 
