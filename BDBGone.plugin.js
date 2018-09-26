@@ -24,7 +24,7 @@ class BDBGone {
         let electron = window.require('electron');
         let userData = electron.remote.app.getPath('userData');
         let version = fs.readdirSync(userData).filter(e => parseInt(e) + 1)[0];
-        window.BDBGone_DCPath = path.join(userData, version, 'modules', 'discord_desktop_core', '/');
+        window.BDBGone_DCPath = path.join(userData, version, 'modules', 'discord_desktop_core', 'index.js');
 
         window.BDBGone_rimraf = function (dir_path) {
             if (dir_path.length < 10) return; // Just in case something goes wrong as it's trying to delete / or something stupid like that.
@@ -50,7 +50,7 @@ class BDBGone {
         window.removeBD = function () {
             if (confirm('Are you absolutely sure?')) {
                 let electron = window.require('electron');
-
+                let fs       = window.require('fs');
 
                 if (!document.getElementById('BDBGone_keepData').checked) {
                     BdApi.showToast('Deleting BetterDiscord files...', {
@@ -63,8 +63,7 @@ class BDBGone {
                 BdApi.showToast('Removing link from Discord...', {
                     type: 'danger'
                 });
-                BDBGone_rimraf(BDBGone_DCPath);
-
+                fs.writeFile(BDBGone_DCPath, "module.exports = require('./core.asar')");
 
                 BdApi.showToast('Restarting...', {
                     type: 'warn'
@@ -101,7 +100,7 @@ class BDBGone {
                 <button onClick="window.removeBD()">Remove</button>
             </li>
             </ul>
-            <h3>The following files will be deleted:</h3>
+            <h3>The following files will be deleted or modified:</h3>
             <ul>
             <li>
                 ${BDBGone_BDPath}<br>
