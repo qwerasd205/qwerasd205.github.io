@@ -1,5 +1,9 @@
 //META{"name":"BDBGone"}*//
 
+// !!! Hey there! If you didn't come here from the BetterDiscord Discord server ( https://discord.gg/2HScm8j )  !!! //
+// !!! then please do not use whatever you were using that led you here, getting plugins from places other than !!! //
+// !!! the #plugin repo channel in the BD server can be dangerous, as they can be malicious and do bad things.  !!! //
+
 class BDBGone {
     getName() {
         return "BD-B-Gone";
