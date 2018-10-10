@@ -1,0 +1,9 @@
+*:not(code), ::-webkit-input-placeholder {
+    font-family: opendyslexic !important;
+    font-size: 15px;
+    word-spacing: 3px;
+}
+
+.da-markup {
+    line-height: 2
+}
