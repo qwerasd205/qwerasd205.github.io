@@ -12,7 +12,7 @@ class EmptyEnter {
         return "Fixes enter on empty messages.";
     }
     getVersion() {
-        return "0.1";
+        return "0.2";
     }
     getAuthor() {
         return "Qwerasd";
@@ -46,7 +46,7 @@ class EmptyEnter {
     }
 
     observer(changes) {
-        document.querySelectorAll('textarea:not(.empty-enter)').forEach(
+        document.querySelectorAll(':not(form)>div>div>div>textarea:not(.empty-enter)').forEach(
             textarea => {
                 textarea.classList.add('empty-enter');
                 textarea.addEventListener('keydown',
@@ -61,7 +61,7 @@ class EmptyEnter {
     }
 
     cleanup() {
-        document.querySelectorAll('textarea.empty-enter').forEach(
+        document.querySelectorAll(':not(form)>div>div>div>textarea.empty-enter').forEach(
             textarea => {
                 textarea.classList.remove('empty-enter');
                 textarea.removeEventListener('keydown',
