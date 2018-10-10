@@ -12,7 +12,7 @@ class EmptyEnter {
         return "Fixes enter on empty messages.";
     }
     getVersion() {
-        return "0.2";
+        return "0.3";
     }
     getAuthor() {
         return "Qwerasd";
@@ -34,7 +34,7 @@ class EmptyEnter {
 
     handleEnter(textarea) {
         const identity = textarea.parentNode.parentNode.parentNode.parentNode.parentNode;
-        if (identity.classList.contains('da-message')) {
+        if (identity.classList.contains('da-message') || identity.classList.contains('container-1YxwTf')) {
             // Editing a message //
             identity.getElementsByClassName('da-anchor')[1].click();
         } else if (identity.classList.contains('da-uploadModal')) {
