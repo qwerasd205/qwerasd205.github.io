@@ -49,9 +49,9 @@ class EmptyEnter {
         document.querySelectorAll(':not(form)>div>div>div>textarea:not(.empty-enter)').forEach(
             textarea => {
                 textarea.classList.add('empty-enter');
-                textarea.addEventListener('keydown',
+                $(textarea).on('keydown.emptyEnter',
                     event => {
-                        if (event.which === 13) {
+                        if (event.which === 13 && !event.shiftKey) {
                             window.emptyEnterFunc(event.target);
                         }
                     }
@@ -64,13 +64,7 @@ class EmptyEnter {
         document.querySelectorAll(':not(form)>div>div>div>textarea.empty-enter').forEach(
             textarea => {
                 textarea.classList.remove('empty-enter');
-                textarea.removeEventListener('keydown',
-                    event => {
-                        if (event.which === 13) {
-                            window.emptyEnterFunc(event.target);
-                        }
-                    }
-                );
+                $(textarea).off('keydown.emptyEnter');
             }
         );
     }
