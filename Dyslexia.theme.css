@@ -1,5 +1,7 @@
 //META{"name":"Dyslexia","description":"Makes changes to the font and layout to help dyslexics use Discord.","author":"Qwerasd","version":"0.0.2"}*//{}
 
+@import url(https://qwerasd205.github.io/Dyslexia.css);
+
 /* ----------------------------------------------------------------------- */
 
 /* SETTINGS */
@@ -11,5 +13,3 @@
 }
 
 /* ----------------------------------------------------------------------- */
-
-@import url(https://qwerasd205.github.io/Dyslexia.css);
