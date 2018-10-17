@@ -1,0 +1,7 @@
+@import url(https://qwerasd205.github.io/Dyslexia.css);
+
+:root {
+    --font-size: 15px;   /* Font size (Over 16 px starts to cause issues) */
+    --word-spacing: 3px; /* Word spacing */
+    --line-spacing: 2;   /* Line spacing */
+}
