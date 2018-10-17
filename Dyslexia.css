@@ -26,7 +26,7 @@
 	font-style: italic;
 }
 
-*:not(code), ::-webkit-input-placeholder {
+*, ::-webkit-input-placeholder {
     font-family: opendyslexic !important;
     font-size: var(--font-size);
     word-spacing: var(--word-spacing);
