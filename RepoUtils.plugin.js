@@ -12,7 +12,7 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.0.1";
+        return "0.0.2";
     }
     getAuthor() {
         return "Qwerasd";
@@ -133,12 +133,16 @@ class RepoUtils {
 
             req.head(url, (err, response, body) => {
                 if (err) return reject(err);
-                const result = {
-                    name: response.headers['content-disposition'].split('filename=')[1].split(';')[0],
-                    type: response.headers['content-type'].split(';')[0]
-                };
-                this.info[url] = result;
-                resolve(result);
+                try {
+                    const result = {
+                        name: response.headers['content-disposition'].split('filename=')[1].split(';')[0],
+                        type: response.headers['content-type'].split(';')[0]
+                    };
+                    this.info[url] = result;
+                    resolve(result);
+                } catch (e) {
+                    reject(e);
+                }
             });
         });
     }
@@ -165,8 +169,14 @@ class RepoUtils {
     }
 
     async install(url) {
-        const path    = require('path');
-        const info    = await this.getFileInfo(url);
+        const path = require('path');
+        let info   = {};
+        try {
+            info = await this.getFileInfo(url);
+        } catch (e) {
+            BdApi.showToast(`Error getting info for install!`, {type: 'error'});
+            throw err;
+        }
         const isTheme = info.type === 'text/css';
         const name    = info.name;
 
@@ -183,6 +193,7 @@ class RepoUtils {
             }
         })
         .catch(err => {
+            BdApi.showToast(`There was an error installing the ${isTheme ? 'theme' : 'plugin'}!`, {type: 'error'});
             throw err;
         });
     }
@@ -258,6 +269,11 @@ class RepoUtils {
             header.style.display = '';
 
             if (isTheme) preview.style.display = '';
+        })
+        .catch(e => {
+            this.collapseButtons(group);
+            BdApi.showToast(`There was an error getting info!`, {type: 'error'});
+            throw e;
         });
         
         group.classList.add('open');
