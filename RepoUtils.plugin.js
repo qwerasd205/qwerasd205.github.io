@@ -51,6 +51,7 @@ class RepoUtils {
                     transition: max-width 0.5s ease-in-out, max-height 0.2s linear, top 0.2s linear;
                     overflow: hidden;
                     white-space: nowrap;
+                    text-indent: 0;
                 }
 
                 .repoUtilsButtonGroup.open {
