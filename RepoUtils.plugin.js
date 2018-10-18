@@ -12,25 +12,20 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.0.2";
+        return "0.0.3";
     }
     getAuthor() {
         return "Qwerasd";
     }
-
     load() {
-        this.info      = {};
-        const path     = require('path');
-        const process  = require('process');
+        this.infos = bdPluginStorage.get('RepoUtils', 'infos') || {};
+        const path = require('path');
+        const process = require('process');
         const platform = process.platform;
-        this.dataPath  = (platform === "win32" ? process.env.APPDATA : platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.config") + "/BetterDiscord/";
-        this.themeLoc  = path.join(this.dataPath, 'themes');
+        this.dataPath = (platform === "win32" ? process.env.APPDATA : platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.config") + "/BetterDiscord/";
+        this.themeLoc = path.join(this.dataPath, 'themes');
         this.pluginLoc = path.join(this.dataPath, 'plugins');
-    }
-
-    start() {
-        BdApi.injectCSS('repoUtils', 
-            `
+        this.css = `
                 .repoUtilsButtonGroup {
                     display: inline-block;
                     background-color: rgba(0,0,0,0.5);
@@ -93,190 +88,180 @@ class RepoUtils {
                 .repoUtilsHeader {
                     line-height: 2.25ch;
                 }
-            `
-        );
+            `;
+    }
+    start() {
+        BdApi.injectCSS('repoUtils', this.css);
         this.processLinks();
-        $(document.body).on('click.repoUtils', _ => {this.collapseAllButtons(this.collapseButtons)});
+        $(document.body).on('click.repoUtils', _ => { this.collapseAllButtonGroups(this.collapseButtonGroup); });
         this.rnm = BdApi.getPlugin('Restart No More') ? true : false;
     }
-
     stop() {
         BdApi.clearCSS('repoUtils');
-        Array.from(document.getElementsByClassName('repoUtilsButtonGroup')).forEach(
-            b => {
-                b.parentElement.removeChild(b);
-            }
-        );
-        Array.from(document.getElementsByClassName('repoUtils')).forEach(
-            e => {
-                e.classList.remove('repoUtils');
-            }
-        );
+        Array.from(document.getElementsByClassName('repoUtilsButtonGroup')).forEach(b => {
+            b.parentElement.removeChild(b);
+        });
+        Array.from(document.getElementsByClassName('repoUtils')).forEach(e => {
+            e.classList.remove('repoUtils');
+        });
         $(document.body).off('click.repoUtils');
+        bdPluginStorage.set('RepoUtils', 'infos', this.infos);
     }
-
+    /**
+     * Generate button element
+     */
     button(text, handler, extraClass) {
         let button = document.createElement('button');
         button.classList.add('repoUtilsButton');
         button.innerText = text;
         button.classList.add(extraClass);
-        if (handler) button.addEventListener('click', e => {
-            handler(e);
-            e.stopPropagation();
-        });
+        if (handler)
+            button.addEventListener('click', e => {
+                handler(e);
+                e.stopPropagation();
+            });
         return button;
     }
-
+    /**
+     * Get type and name of file at URL
+     */
     getFileInfo(url) {
         return new Promise((resolve, reject) => {
-            if (this.info[url]) return resolve(this.info[url]);
+            if (this.infos[url])
+                return resolve(this.infos[url]);
             const req = require('request');
-
-            req.head(url, (err, response, body) => {
-                if (err) return reject(err);
+            req.head(url, (err, response, _) => {
+                if (err)
+                    return reject(err);
                 try {
                     const result = {
                         name: response.headers['content-disposition'].split('filename=')[1].split(';')[0],
                         type: response.headers['content-type'].split(';')[0]
                     };
-                    this.info[url] = result;
+                    this.infos[url] = result;
                     resolve(result);
-                } catch (e) {
+                }
+                catch (e) {
                     reject(e);
                 }
             });
         });
     }
-
+    /**
+     * Download file from URL to destination in filesystem
+     */
     downloadFile(url, destination) {
         return new Promise((resolve, reject) => {
             const req = require('request');
-            const fs   = require('fs');
-
+            const fs = require('fs');
             let file = fs.createWriteStream(destination);
-
             req.get(url)
-            .on('response', function(response) {
+                .on('response', function (response) {
                 response.pipe(file);
-                file.on('finish', function() {
+                file.on('finish', function () {
                     file.close();
                     resolve();
                 });
-            }).on('error', function(err) {
-                fs.unlink(destination, _=>{});
+            }).on('error', function (err) {
+                fs.unlink(destination, _ => { });
                 reject(err);
             });
         });
     }
-
+    /**
+     * Install plugin or theme from URL
+     */
     async install(url) {
         const path = require('path');
-        let info   = {};
+        let info;
         try {
             info = await this.getFileInfo(url);
-        } catch (e) {
-            BdApi.showToast(`Error getting info for install!`, {type: 'error'});
-            throw err;
+        }
+        catch (e) {
+            BdApi.showToast(`Error getting info for install!`, { type: 'error' });
+            throw e;
         }
         const isTheme = info.type === 'text/css';
-        const name    = info.name;
-
+        const name = info.name;
         const installPath = path.join(isTheme ? this.themeLoc : this.pluginLoc, name);
-
         this.downloadFile(url, installPath)
-        .then(_ => {
-            this.collapseAllButtons(this.collapseButtons);
-            BdApi.showToast('Installed Successfully!', {type: 'success'});
+            .then(_ => {
+            this.collapseAllButtonGroups(this.collapseButtonGroup);
+            BdApi.showToast('Installed Successfully!', { type: 'success' });
             if (this.rnm) {
-                BdApi.showToast(`Your ${isTheme ? 'theme' : 'plugin'} is now available in settings.`, {type: 'info'});
-            } else {
-                BdApi.showToast(`Reload your Discord to see your ${isTheme ? 'theme' : 'plugin'} in settings.`, {type: 'info'});
+                BdApi.showToast(`Your ${isTheme ? 'theme' : 'plugin'} is now available in settings.`, { type: 'info' });
+            }
+            else {
+                BdApi.showToast(`Reload your Discord to see your ${isTheme ? 'theme' : 'plugin'} in settings.`, { type: 'info' });
             }
         })
-        .catch(err => {
-            BdApi.showToast(`There was an error installing the ${isTheme ? 'theme' : 'plugin'}!`, {type: 'error'});
+            .catch(err => {
+            BdApi.showToast(`There was an error installing the ${isTheme ? 'theme' : 'plugin'}!`, { type: 'error' });
             throw err;
         });
     }
-
+    /**
+     * Open 0x71.cc Discord Preview with URL
+     */
     openPreview(url) {
-        let a    = document.createElement('a');
+        let a = document.createElement('a');
         a.target = '_blank';
-        a.href   = `https://0x71.cc/bd/theme/preview?file=${url}`;
+        a.href = `https://0x71.cc/bd/theme/preview?file=${url}`;
         a.click();
     }
-
-    collapseAllButtons(collapseFunction) {
+    /**
+     * Collapse all button groups
+     */
+    collapseAllButtonGroups(collapseFunction) {
         Array.from(document.querySelectorAll('.repoUtilsButtonGroup.open')).forEach(collapseFunction);
     }
-
-    collapseButtons(group) {
+    /**
+     * Collapse button group
+     */
+    collapseButtonGroup(group) {
         group.classList.remove('open');
         while (group.firstChild) {
             group.removeChild(group.lastChild);
         }
         group.innerText = '...';
     }
-
-    async expandButtons(group, a) {
-
+    /**
+     * Expand button group
+     */
+    async expandButtonGroup(group, a) {
         const open = document.querySelector('.repoUtilsButtonGroup.open');
-        if (open) this.collapseButtons(open);
-
-        const download = this.button(
-            'Download',
-            (function() {
-                this.a.click();
-            }).bind({a: a}),
-            'download'
-        );
-
-        const install = this.button(
-            'Install',
-            (function() {
-                this.install(a.href);
-            }).bind(Object.assign(this, {a: a})),
-            'install'
-        );
-
-        const preview = this.button(
-            'Preview',
-            (function() {
-                this.openPreview(a.href);
-            }).bind({openPreview: this.openPreview, a: a}),
-            'preview'
-        );
-
-        const close = this.button(
-            'X  ',
-            _ => {
-                this.collapseButtons(group);
-            },
-            'close'
-        );
-
+        if (open)
+            this.collapseButtonGroup(open);
+        const download = this.button('Download', (function () {
+            this.a.click();
+        }).bind({ a: a }), 'download');
+        const install = this.button('Install', (function () {
+            this.install(a.href);
+        }).bind(Object.assign(this, { a: a })), 'install');
+        const preview = this.button('Preview', (function () {
+            this.openPreview(a.href);
+        }).bind({ openPreview: this.openPreview, a: a }), 'preview');
+        const close = this.button('X  ', _ => {
+            this.collapseButtonGroup(group);
+        }, 'close');
         let header = document.createElement('div');
         header.classList.add('repoUtilsHeader');
-        header.style.display  = 'none';
-
+        header.style.display = 'none';
         preview.style.display = 'none';
-
         this.getFileInfo(a.href)
-        .then(info => {
+            .then(info => {
             const isTheme = info.type === 'text/css';
-            const name    = info.name;
-
+            const name = info.name;
             header.innerText = name;
             header.style.display = '';
-
-            if (isTheme) preview.style.display = '';
+            if (isTheme)
+                preview.style.display = '';
         })
-        .catch(e => {
-            this.collapseButtons(group);
-            BdApi.showToast(`There was an error getting info!`, {type: 'error'});
+            .catch(e => {
+            this.collapseButtonGroup(group);
+            BdApi.showToast(`There was an error getting info!`, { type: 'error' });
             throw e;
         });
-        
         group.classList.add('open');
         group.innerText = '';
         group.appendChild(header);
@@ -285,38 +270,39 @@ class RepoUtils {
         group.appendChild(preview);
         group.appendChild(download);
     }
-
-    addButtons(a) {
+    /**
+     * Add button group to <a>
+     */
+    addButtonGroup(a) {
         a.classList.add('repoUtils');
         let buttonGroup = document.createElement('span');
         buttonGroup.classList.add('repoUtilsButtonGroup');
         buttonGroup.innerText = '...';
-
-        buttonGroup.addEventListener('click', 
-            (function(e) {
-                this.expandButtons(buttonGroup, a);
-                e.stopPropagation();
-            }).bind(this)
-        );
-
+        buttonGroup.addEventListener('click', (function (e) {
+            this.expandButtonGroup(buttonGroup, a);
+            e.stopPropagation();
+        }).bind(this));
         a.insertAdjacentElement('afterend', buttonGroup);
     }
-
+    /**
+     * Add button groups to all the <a>s
+     */
     processLinks() {
         Array.from(document.getElementsByTagName('a'))
             .filter(a => {
-                if (a.classList.contains('repoUtils')) return false;
-                if (a.hostname === 'betterdiscord.net' && a.pathname === '/ghdl') {
-                    return true;
-                } else {
-                    a.classList.add('repoUtils');
-                }
-            })
-            .forEach((function(a) {
-                this.addButtons(a);
-            }).bind(this));
+            if (a.classList.contains('repoUtils'))
+                return false;
+            if (a.hostname === 'betterdiscord.net' && a.pathname === '/ghdl') {
+                return true;
+            }
+            else {
+                a.classList.add('repoUtils');
+            }
+        })
+            .forEach((function (a) {
+            this.addButtonGroup(a);
+        }).bind(this));
     }
-
     observer() {
         this.processLinks();
     }
