@@ -114,6 +114,7 @@ class RepoUtils {
             `;
     }
     start() {
+        this.load();
         BdApi.injectCSS('repoUtils', this.css);
         this.processLinks();
         $(document.body).on('click.repoUtils', _ => { this.collapseAllButtonGroups(this.collapseButtonGroup); });
