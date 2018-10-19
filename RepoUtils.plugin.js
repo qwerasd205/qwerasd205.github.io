@@ -12,17 +12,17 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.1.0";
+        return "0.1.1";
     }
     getAuthor() {
         return "Qwerasd";
     }
     load() {
         this.infos = BdApi.loadData('RepoUtils', 'infos') || {};
-        this.settings = BdApi.loadData('RepoUtils', 'settings') || {
+        this.settings = Object.assign(BdApi.loadData('RepoUtils', 'settings') || {}, {
             afterInstall: 'enable',
             previewType: 'inApp'
-        };
+        });
         const path = require('path');
         const process = require('process');
         const platform = process.platform;
@@ -117,7 +117,6 @@ class RepoUtils {
         BdApi.injectCSS('repoUtils', this.css);
         this.processLinks();
         $(document.body).on('click.repoUtils', _ => { this.collapseAllButtonGroups(this.collapseButtonGroup); });
-        this.rnm = BdApi.getPlugin('Restart No More') ? true : false;
     }
     stop() {
         BdApi.clearCSS('repoUtils');
@@ -174,7 +173,7 @@ class RepoUtils {
     /**
      * Download file from URL to destination in filesystem
      */
-    downloadFile(url, destination, getMeta) {
+    downloadFile(url, destination) {
         return new Promise((resolve, reject) => {
             const req = require('request');
             const fs = require('fs');
@@ -184,20 +183,7 @@ class RepoUtils {
                 response.pipe(file);
                 file.on('finish', function () {
                     file.close();
-                    const read = fs.createReadStream(destination);
-                    let meta = '';
-                    read.on('data', chunk => {
-                        const index = chunk.indexOf('\n');
-                        meta += chunk;
-                        if (index !== -1)
-                            read.close();
-                    })
-                        .on('close', _ => {
-                        resolve(JSON.parse(meta.split('//META')[1].split('*//')[0]));
-                    })
-                        .on('error', err => {
-                        reject(err);
-                    });
+                    resolve();
                 });
             }).on('error', function (err) {
                 fs.unlink(destination, _ => { });
@@ -209,6 +195,9 @@ class RepoUtils {
      * Install plugin or theme from URL
      */
     async install(url) {
+        if (document.getElementById('repoUtilsEndPreview')) {
+            document.getElementById('repoUtilsEndPreview').click();
+        }
         const path = require('path');
         const fs = require('fs');
         let info;
@@ -231,51 +220,49 @@ class RepoUtils {
                 backupName += '_';
             fs.renameSync(installPath, path.join(backupPath, filename));
         }
-        this.downloadFile(url, installPath, true)
-            .then(meta => {
-            let name;
-            if (isTheme) {
-                name = meta.name;
-            }
+        this.downloadFile(url, installPath)
+            .then(async (_) => {
+            const checkObject = isTheme ? bdthemes : bdplugins;
+            const name = await new Promise(resolve => {
+                setInterval(_ => {
+                    const name = Object.keys(checkObject).find(e => checkObject[e].filename === filename);
+                    if (name !== undefined)
+                        resolve(name);
+                }, 100);
+            });
             this.collapseAllButtonGroups(this.collapseButtonGroup);
-            BdApi.showToast(`${name} Installed Successfully!`, { type: 'success' });
-            if (this.rnm) {
-                switch (this.settings.afterInstall) {
-                    case 'enable':
-                        setTimeout(_ => {
-                            if (isTheme) {
-                                themeModule.enableTheme(name);
-                                BdApi.showToast(`${name} enabled.`, { type: 'success' });
-                            }
-                            else {
-                                BdApi.showToast(`Plugins can not be auto-enabled.`, { type: 'warn' });
-                            }
-                        }, 250);
-                        break;
-                    case 'reveal':
+            //BdApi.showToast(`${name} Installed Successfully!`, {type: 'success'});
+            switch (this.settings.afterInstall) {
+                case 'enable':
+                    setTimeout(_ => {
+                        if (isTheme) {
+                            themeModule.enableTheme(name);
+                            BdApi.showToast(`${name} enabled.`, { type: 'success' });
+                        }
+                        else {
+                            pluginModule.enablePlugin(name);
+                            BdApi.showToast(`${name} enabled.`, { type: 'success' });
+                        }
+                    }, 250);
+                    break;
+                case 'reveal':
+                    //@ts-ignore
+                    document.querySelector('button[aria-label="User Settings"]').click();
+                    requestAnimationFrame(_ => {
                         //@ts-ignore
-                        document.querySelector('button[aria-label="User Settings"]').click();
+                        document.querySelector(`.ui-tab-bar-item:nth-last-child(${isTheme ? 1 : 2})`).click();
                         requestAnimationFrame(_ => {
-                            //@ts-ignore
-                            document.querySelector(`.ui-tab-bar-item:nth-last-child(${isTheme ? 1 : 2})`).click();
-                            if (isTheme) {
-                                requestAnimationFrame(_ => {
-                                    document.querySelector(`li[data-name="${name}"]`).scrollIntoView({
-                                        behavior: 'auto',
-                                        block: 'center',
-                                        inline: 'center'
-                                    });
-                                });
-                            }
+                            document.querySelector(`li[data-name="${name}"]`).scrollIntoView({
+                                behavior: 'auto',
+                                block: 'center',
+                                inline: 'center'
+                            });
                         });
-                        break;
-                    case 'nothing':
-                        BdApi.showToast(`${name} is now available in settings.`, { type: 'info' });
-                        break;
-                }
-            }
-            else {
-                BdApi.showToast(`Reload your Discord to see ${name} in settings.`, { type: 'info' });
+                    });
+                    break;
+                case 'nothing':
+                    BdApi.showToast(`${name} is now available in settings.`, { type: 'info' });
+                    break;
             }
         })
             .catch(err => {
@@ -296,6 +283,9 @@ class RepoUtils {
      * Start in-app preview
      */
     startPreview(url) {
+        if (document.getElementById('repoUtilsEndPreview')) {
+            document.getElementById('repoUtilsEndPreview').click();
+        }
         const link = document.createElement('link');
         link.href = url;
         link.rel = 'stylesheet';
@@ -319,15 +309,18 @@ class RepoUtils {
         BdApi.showToast('Press shift to toggle theme.', { type: 'info', timeout: 5e3 });
         BdApi.showToast('Press CTRL to end preview.', { type: 'info', timeout: 5e3 });
         const endPreview = document.createElement('button');
-        document.body.style.setProperty('--button-color', '50,150,250');
+        const install = document.createElement('button');
         document.body.style.setProperty('--button-opacity', '0.5');
-        function cleanupPreview() {
+        function cleanupPreview(dontReenable) {
             document.head.removeChild(link);
             $(document.body).off('keydown.repoUtilsPreview');
             document.body.style.removeProperty('--button-color');
             document.body.style.removeProperty('--button-opacity');
             document.body.removeChild(endPreview);
-            previouslyEnabled.forEach(themeModule.enableTheme.bind(themeModule));
+            document.body.removeChild(install);
+            if (!dontReenable) {
+                previouslyEnabled.forEach(themeModule.enableTheme.bind(themeModule));
+            }
             BdApi.showToast('Theme preview ended.', { type: 'success' });
         }
         $(document.body).on('keydown.repoUtilsPreview', e => {
@@ -349,7 +342,19 @@ class RepoUtils {
         endPreview.style.fontSize = '200%';
         endPreview.style.color = 'white';
         endPreview.id = 'repoUtilsEndPreview';
+        endPreview.style.setProperty('--button-color', '50,150,250');
         document.body.appendChild(endPreview);
+        install.addEventListener('click', _ => { cleanupPreview(this.settings.afterInstall === 'enable'); this.install(url); });
+        install.classList.add('repoUtilsButton');
+        install.textContent = 'Install';
+        install.style.position = 'absolute';
+        install.style.bottom = 'calc(40px + 2ch)';
+        install.style.right = '24px';
+        install.style.fontSize = '200%';
+        install.style.color = 'white';
+        install.id = 'repoUtilsInstall';
+        install.style.setProperty('--button-color', '20,200,20');
+        document.body.appendChild(install);
     }
     /**
      * Collapse all button groups
@@ -382,7 +387,7 @@ class RepoUtils {
         }, 'install');
         const previewFunction = this.settings.previewType === 'inApp' ? this.startPreview : this.openPreview;
         const preview = this.button('Preview', _ => {
-            previewFunction(a.href);
+            previewFunction.bind(this)(a.href);
         }, 'preview');
         const close = this.button('X  ', _ => {
             this.collapseButtonGroup(group);
