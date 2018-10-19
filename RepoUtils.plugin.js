@@ -12,12 +12,14 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.1.1";
+        return "0.1.2";
     }
     getAuthor() {
         return "Qwerasd";
     }
     load() {
+        this.getTrusted()
+            .then(trusted => this.trusted = trusted);
         this.infos = BdApi.loadData('RepoUtils', 'infos') || {};
         this.settings = Object.assign(BdApi.loadData('RepoUtils', 'settings') || {}, {
             afterInstall: 'enable',
@@ -114,10 +116,9 @@ class RepoUtils {
             `;
     }
     start() {
-        this.load();
         BdApi.injectCSS('repoUtils', this.css);
-        this.processLinks();
         $(document.body).on('click.repoUtils', _ => { this.collapseAllButtonGroups(this.collapseButtonGroup); });
+        this.awaitTrusted(this.processLinks);
     }
     stop() {
         BdApi.clearCSS('repoUtils');
@@ -130,6 +131,45 @@ class RepoUtils {
         $(document.body).off('click.repoUtils');
         BdApi.saveData('RepoUtils', 'infos', this.infos);
         BdApi.saveData('RepoUtils', 'settings', this.settings);
+        BdApi.saveData('RepoUtils', 'trusted', this.trusted);
+    }
+    /**
+     * Wait for getTrusted() to finish
+     */
+    awaitTrusted(callback) {
+        let wait = setInterval(_ => {
+            if (this.trusted !== undefined) {
+                clearInterval(wait);
+                callback();
+            }
+        }, 250);
+    }
+    /**
+     * Get trusted GHDL links
+     */
+    getTrusted() {
+        const stored = BdApi.getData('RepoUtils', 'trusted') || [];
+        return new Promise(resolve => {
+            require('request')({
+                url: 'https://qwerasd205.github.io/RepoUtilsTrust.json',
+                json: 'true'
+            }, (err, _, body) => {
+                console.log('[Repo Utils] Loading trusted GHDL links...');
+                console.log(body.trusted);
+                console.log(stored);
+                const storedSet = new Set(stored);
+                const trustedSet = new Set(body.trusted);
+                if (err)
+                    return resolve(storedSet);
+                resolve(new Set([...storedSet, ...trustedSet]));
+            });
+        });
+    }
+    /**
+     * Get the current channel ID
+     */
+    getCurrentChannel() {
+        return BdApi.findModuleByProps("getChannelId").getChannelId();
     }
     /**
      * Generate button element
@@ -434,7 +474,14 @@ class RepoUtils {
     /**
      * Add button groups to all the <a>s
      */
-    processLinks() {
+    async processLinks() {
+        const currentChannel = BdApi.findModuleByProps("getChannelId").getChannelId();
+        const trustedChannels = [
+            "164998435915825152",
+            "164997575034929152",
+            "290958282724737026",
+            "290959392864731146"
+        ];
         Array.from(document.getElementsByTagName('a'))
             .filter(a => {
             if (a.classList.contains('repoUtils'))
@@ -446,9 +493,12 @@ class RepoUtils {
                 a.classList.add('repoUtils');
             }
         })
-            .forEach((function (a) {
-            this.addButtonGroup(a);
-        }).bind(this));
+            .forEach(a => {
+            if (trustedChannels.includes(currentChannel))
+                this.trusted.add(a.href);
+            if (this.trusted.has(a.href))
+                this.addButtonGroup(a);
+        });
     }
     observer() {
         this.processLinks();
