@@ -12,28 +12,25 @@ class BDBGone {
         return "Completely (or partially) remove BD from your system.";
     }
     getVersion() {
-        return "0.0.2";
+        return "0.1.0";
     }
     getAuthor() {
         return "Qwerasd";
     }
 
     load() {
-        let fs = window.require("fs");
-        let process = window.require("process");
-        let path = window.require('path');
-        let platform = process.platform;
-        let dataPath = (platform === "win32" ? process.env.APPDATA : platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.config") + "/BetterDiscord/";
+        const process = window.require("process");
+        const path = window.require('path');
+        const platform = process.platform;
+        const dataPath = (platform === "win32" ? process.env.APPDATA : platform === "darwin" ? process.env.HOME + "/Library/Preferences" : process.env.HOME + "/.config") + "/BetterDiscord/";
         window.BDBGone_BDPath = dataPath;
-        let electron = window.require('electron');
-        let userData = electron.remote.app.getPath('userData');
-        let version = fs.readdirSync(userData).filter(e => parseInt(e) + 1)[0];
-        window.BDBGone_DCPath = path.join(userData, version, 'modules', 'discord_desktop_core', 'index.js');
+        const electron = window.require('electron');
+        window.BDBGone_DCPath = path.resolve(electron.remote.app.getAppPath(), "..", "app");
 
         window.BDBGone_rimraf = function (dir_path) {
             if (dir_path.length < 10) return; // Just in case something goes wrong as it's trying to delete / or something stupid like that.
-            let fs = window.require('fs');
-            let path = window.require('path');
+            const fs = window.require('fs');
+            const path = window.require('path');
             if (fs.existsSync(dir_path)) {
                 fs.readdirSync(dir_path).forEach(function (entry) {
                     var entry_path = path.join(dir_path, entry);
@@ -53,8 +50,7 @@ class BDBGone {
 
         window.removeBD = function () {
             if (confirm('Are you absolutely sure?')) {
-                let electron = window.require('electron');
-                let fs       = window.require('fs');
+                const electron = window.require('electron');
 
                 if (!document.getElementById('BDBGone_keepData').checked) {
                     BdApi.showToast('Deleting BetterDiscord files...', {
@@ -67,7 +63,7 @@ class BDBGone {
                 BdApi.showToast('Removing link from Discord...', {
                     type: 'danger'
                 });
-                fs.writeFileSync(BDBGone_DCPath, "module.exports = require('./core.asar')");
+                BDBGone_rimraf(BDBGone_DCPath);
 
                 BdApi.showToast('Restarting...', {
                     type: 'warn'
