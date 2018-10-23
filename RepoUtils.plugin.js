@@ -12,7 +12,7 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.1.3";
+        return "0.1.4";
     }
     getAuthor() {
         return "Qwerasd";
@@ -63,6 +63,7 @@ class RepoUtils {
                     top: -0.2ch;
                     padding: 2px;
                     box-shadow: 0 2px 5px black;
+                    cursor: default;
                 }
 
                 .repoUtilsButton {
@@ -76,12 +77,18 @@ class RepoUtils {
                     font-weight: 500;
                 }
 
-                .repoUtilsButton:hover {
+                .repoUtilsButton:not(:disabled):hover {
                     --button-opacity: 0.8;
                 }
 
-                .repoUtilsButton:active {
+                .repoUtilsButton:not(:disabled):active {
                     --button-opacity: 0.35;
+                }
+
+                .repoUtilsButton:disabled {
+                    -webkit-filter: grayscale(50%);
+                    opacity: 0.5;
+                    cursor: not-allowed;
                 }
 
                 .repoUtilsButton:last-child {
@@ -112,6 +119,34 @@ class RepoUtils {
                     outline: 2px solid rgba(0,0,0,0.5);
                     font-weight: 500;
                     height: 2ch;
+                    position: relative;
+                    padding-left: 1ex;
+                    padding-right: 1ex;
+                }
+
+                .repoUtilsHeader.loading::after {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    content: '.';
+                    animation: loading 1.5s linear infinite;
+                }
+
+                @keyframes loading {
+                    0% {
+                        content: '.';
+                    }
+                    33.333333% {
+                        content: '..';
+                    }
+                    66.666666% {
+                        content: '...';
+                    }
+                    100% {
+                        content: '.';
+                    }
                 }
             `;
     }
@@ -157,21 +192,6 @@ class RepoUtils {
      */
     getCurrentChannel() {
         return BdApi.findModuleByProps("getChannelId").getChannelId();
-    }
-    /**
-     * Generate button element
-     */
-    button(text, handler, extraClass) {
-        let button = document.createElement('button');
-        button.classList.add('repoUtilsButton');
-        button.innerText = text;
-        button.classList.add(extraClass);
-        if (handler)
-            button.addEventListener('click', e => {
-                handler(e);
-                e.stopPropagation();
-            });
-        return button;
     }
     /**
      * Get type and name of file at URL
@@ -401,6 +421,21 @@ class RepoUtils {
         group.innerText = '...';
     }
     /**
+     * Generate button element
+     */
+    button(text, handler, extraClass) {
+        let button = document.createElement('button');
+        button.classList.add('repoUtilsButton');
+        button.innerText = text;
+        button.classList.add(extraClass);
+        if (handler)
+            button.addEventListener('click', e => {
+                handler(e);
+                e.stopPropagation();
+            });
+        return button;
+    }
+    /**
      * Expand button group
      */
     async expandButtonGroup(group, a) {
@@ -415,21 +450,24 @@ class RepoUtils {
         }, 'install');
         const previewFunction = this.settings.previewType === 'inApp' ? this.startPreview : this.openPreview;
         const preview = this.button('Preview', _ => {
-            previewFunction.bind(this)(a.href);
+            if (!preview.disabled)
+                previewFunction.bind(this)(a.href);
         }, 'preview');
+        preview.disabled = true;
         const close = this.button('X  ', _ => {
             this.collapseButtonGroup(group);
         }, 'close');
         let header = document.createElement('div');
         header.classList.add('repoUtilsHeader');
-        preview.style.display = 'none';
+        header.classList.add('loading');
         this.getFileInfo(a.href)
             .then(info => {
             const isTheme = info.type === 'text/css';
             const name = info.name;
+            header.classList.remove('loading');
             header.innerText = name;
             if (isTheme)
-                preview.style.display = '';
+                preview.disabled = false;
         })
             .catch(e => {
             this.collapseButtonGroup(group);
