@@ -1,0 +1,37 @@
+//META{"name":"BGRM Example","description":"An example of what a very basic transparent theme using bgrm.css looks like.","author":"Qwerasd","version":"0.1"}*//{}
+
+@import url('https://qwerasd205.github.io/bgrm.css');
+
+:root {
+    --bgrm-overlay: rgba(0,0,0,0.3);
+}
+
+#app-mount {
+    background: url('https://i.imgur.com/7SrF82H.png') center/cover; /* Set background image */
+}
+
+.app {
+    background: rgba(0,0,0,0.6); /* Put a layer over it so it isn't too bright */
+}
+
+/* ---- */
+
+/* vv Make text that is too dark to read a bit brighter vv */
+
+.nameDefaultText-24KCy5, .nameDefaultVoice-3WUH7s, .nameLockedText-3pqQcL, .nameLockedVoice-26MhB1,
+.iconCollapsed-3hFp_8, .iconDefault-3Gr8d2, .nameCollapsed-34uFWo, .nameDefault-2DI02H,
+.app .membersGroup-v9BXpm,
+.app #bd-settings-sidebar .ui-tab-bar-header,
+.app #bd-settingspane-container .ui-switch-item .style-description,
+.side-8zPYf6 .header-2RyJ0Y, .side-8zPYf6 .item-PXvHYJ,
+.app .description-3_Ncsb, .app .labelDescriptor-1PqHgD {
+    color: #B8B8B8;   
+}
+
+#bd-settings-sidebar div {
+    color: #B8B8B8 !important;
+}
+
+.nameMutedText-3Vj4bM, .nameMutedVoice-3oxyQZ {
+    color: #989898;
+}
