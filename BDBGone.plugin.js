@@ -12,7 +12,7 @@ class BDBGone {
         return "Completely (or partially) remove BD from your system.";
     }
     getVersion() {
-        return "0.1.0";
+        return "0.1.1";
     }
     getAuthor() {
         return "Qwerasd";
@@ -26,6 +26,10 @@ class BDBGone {
         window.BDBGone_BDPath = dataPath;
         const electron = window.require('electron');
         window.BDBGone_DCPath = path.resolve(electron.remote.app.getAppPath(), "..", "app");
+        const userData = electron.remote.app.getPath('userData');
+        const version = require('fs').readdirSync(userData).filter(e => parseInt(e) + 1)[0];
+        window.BDBGone_IndexPath = path.join(userData, version, 'modules', 'discord_desktop_core', 'index.js');
+
 
         window.BDBGone_rimraf = function (dir_path) {
             if (dir_path.length < 10) return; // Just in case something goes wrong as it's trying to delete / or something stupid like that.
@@ -64,6 +68,7 @@ class BDBGone {
                     type: 'danger'
                 });
                 BDBGone_rimraf(BDBGone_DCPath);
+                require('fs').writeFileSync(BDBGone_IndexPath, "module.exports = require('./core.asar')");
 
                 BdApi.showToast('Restarting...', {
                     type: 'warn'
@@ -91,7 +96,7 @@ class BDBGone {
             <ul>
             <li>
                 <label>
-                    <input id="BDBGone_keepData" type="checkbox"}/>
+                    <input id="BDBGone_keepData" type="checkbox" onclick="document.getElementById('BDBGone-Settings-BDData').style.display = document.getElementById('BDBGone_keepData').checked ? 'none' : ''"/>
                     Keep BD Data
                 </label><br>
                 <span style="font-size: 60%; opacity: 0.7">(If checked plugins and themes will be kept if you reinstall)</span>
@@ -103,11 +108,13 @@ class BDBGone {
             <h3>The following files will be deleted or modified:</h3>
             <ul>
             <li>
-                ${BDBGone_BDPath}<br>
-                <span style="font-size: 60%; opacity: 0.7">(Unless Keep BD Data is checked)</span>
+                ${BDBGone_DCPath} <span style="float: right">[Deleted]</span>
             </li>
             <li>
-                ${BDBGone_DCPath}
+                ${BDBGone_IndexPath} <span style="float: right">[Modified]</span>
+            </li>
+            <li id="BDBGone-Settings-BDData">
+                ${BDBGone_BDPath} <span style="float: right">[Deleted]</span>
             </li>
             </ul>
         </div>`;
