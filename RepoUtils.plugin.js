@@ -154,6 +154,7 @@ class RepoUtils {
         BdApi.injectCSS('repoUtils', this.css);
         $(document.body).on('click.repoUtils', _ => { this.collapseAllButtonGroups(this.collapseButtonGroup); });
         this.trusted = await this.trusted;
+        this.trustedLoaded = true;
         this.processLinks();
     }
     stop() {
@@ -526,7 +527,8 @@ class RepoUtils {
         });
     }
     observer() {
-        this.processLinks();
+        if (this.trustedLoaded)
+            this.processLinks();
     }
     getSettingsPanel() {
         function group(header) {
