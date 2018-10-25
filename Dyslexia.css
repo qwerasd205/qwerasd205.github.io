@@ -1,27 +1,27 @@
 @font-face {
   font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-Regular.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-Regular.ttf');
 	font-style: normal;
 	font-weight: normal;
 } 
 
 @font-face {
 	font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-Italic.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-Italic.ttf');
 	font-style: italic;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-Bold.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-Bold.ttf');
 	font-weight: bold;
 	font-style: normal;
 } 
 
 @font-face {
 	font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-BoldItalic.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-BoldItalic.ttf');
 	font-weight: bold;
 	font-style: italic;
 }
