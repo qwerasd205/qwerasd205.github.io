@@ -1,37 +1,40 @@
 @font-face {
   font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-Regular.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-Regular.ttf');
 	font-style: normal;
 	font-weight: normal;
 } 
 
 @font-face {
 	font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-Italic.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-Italic.ttf');
 	font-style: italic;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-Bold.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-Bold.ttf');
 	font-weight: bold;
 	font-style: normal;
 } 
 
 @font-face {
 	font-family: 'opendyslexic';
-	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic-BoldItalic.ttf');
+	src: url('https://dyslexicfonts.com/fonts/OpenDyslexic3-BoldItalic.ttf');
 	font-weight: bold;
 	font-style: italic;
 }
 
-*, ::-webkit-input-placeholder {
+/* ----------------------------------------------------------------------- */
+
+*:not(code), ::-webkit-input-placeholder {
     font-family: opendyslexic !important;
-    font-size: var(--font-size);
-    word-spacing: var(--word-spacing);
+    font-size: var(--font-size, initial);
+    word-spacing: var(--word-spacing, initial);
+    letter-spacing: var(--letter-spacing, initial);
 }
 
 .da-markup {
-    line-height: var(--line-spacing);
+    line-height: var(--line-spacing, initial);
 }

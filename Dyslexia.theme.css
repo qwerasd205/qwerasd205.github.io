@@ -1,4 +1,4 @@
-//META{"name":"Dyslexia","description":"Makes changes to the font and layout to help dyslexics use Discord.","author":"Qwerasd","version":"0.0.2"}*//{}
+//META{"name":"Dyslexia","description":"Makes changes to the font and layout to help dyslexics use Discord.","author":"Qwerasd","version":"0.0.3"}*//{}
 
 @import url(https://qwerasd205.github.io/Dyslexia.css);
 
@@ -7,9 +7,10 @@
 /* SETTINGS */
 
 :root {
-    --font-size: 15px;   /* Font size (Over 16 px starts to cause issues) */
-    --word-spacing: 3px; /* Word spacing */
-    --line-spacing: 2;   /* Line spacing */
+    --font-size: 15px;        /* Font size (Over 16 px starts to cause issues) */
+    --word-spacing: 3px;      /* Word spacing */
+    --line-spacing: 2;        /* Line spacing */
+    --letter-spacing: 0.25px; /* Letter Spacing */
 }
 
 /* ----------------------------------------------------------------------- */
