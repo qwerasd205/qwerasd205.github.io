@@ -12,7 +12,7 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.1.4";
+        return "0.1.5";
     }
     getAuthor() {
         return "Qwerasd";
@@ -36,14 +36,14 @@ class RepoUtils {
                     display: inline-block;
                     background-color: rgba(0,0,0,0.5);
                     color: white;
-                    max-height: 2ex;
-                    max-width: 2ex;
-                    min-height: 2ex;
-                    min-width: 2ex;
-                    border-radius: 1.5ex;
-                    line-height: calc(1ex - 2px);
+                    max-height: 1em;
+                    max-width: 1em;
+                    min-height: 1em;
+                    min-width: 1em;
+                    border-radius: 0.5em;
+                    line-height: 0.5em;
                     text-align: center;
-                    vertical-align: middle;
+                    vertical-align: -0.25ch;
                     position: relative;
                     top: -0.1ch;
                     margin-left: 0.5ex;
@@ -114,12 +114,11 @@ class RepoUtils {
 
                 .repoUtilsHeader {
                     line-height: 2ch;
-                    margin-bottom: 4px;
+                    margin-bottom: 6px;
                     background: rgba(0,0,0,0.5);
-                    outline: 2px solid rgba(0,0,0,0.5);
+                    outline: 0.25em solid rgba(0,0,0,0.5);
                     font-weight: 500;
                     height: 2ch;
-                    position: relative;
                     padding-left: 1ex;
                     padding-right: 1ex;
                 }
