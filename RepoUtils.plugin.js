@@ -12,7 +12,7 @@ class RepoUtils {
         return "Adds options to download/install/preview next to betterdiscord.net ghdl links.";
     }
     getVersion() {
-        return "0.1.5";
+        return "0.1.6";
     }
     getAuthor() {
         return "Qwerasd";
@@ -167,7 +167,8 @@ class RepoUtils {
         $(document.body).off('click.repoUtils');
         BdApi.saveData('RepoUtils', 'infos', this.infos);
         BdApi.saveData('RepoUtils', 'settings', this.settings);
-        BdApi.saveData('RepoUtils', 'trusted', this.trusted);
+        if (this.trusted.size)
+            BdApi.saveData('RepoUtils', 'trusted', this.trusted);
     }
     /**
      * Get trusted GHDL links
