@@ -1,4 +1,4 @@
-//META{"name":"HLJS Names","description":"Display the name of the syntax highlighting language for a codeblock on hover.","author":"Qwerasd","version":"1.0.0"}*//{}
+//META{"name":"HLJS Names","description":"Display the name of the syntax highlighting language for a codeblock on hover.","author":"Qwerasd","version":"1.0.1"}*//{}
 
 /* ----------------------------------------------------------------------- */
 
@@ -12,15 +12,14 @@
     content: attr(class);
     position: absolute;
     top: 0.1em;
-    right: -492em;
+    right: -1em;
     height: 1.25em;
     overflow: hidden;
-    word-spacing: 9em;
-    text-indent: -97.5ex;
+    text-indent: -74.25ch;
     font-weight: 500;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 5px 0 0 5px;
-    width: 500em;
+    width: 9em;
 }
 
 #app-mount .da-container .da-message .da-markup pre .hljs[class$=hljs]::before {
@@ -32,28 +31,28 @@
 }
 
 #app-mount .da-container .da-message .da-markup pre:not(:hover) .hljs::before {
-    right: -500em;
+    right: -9em;
     animation: slide-out 0.2s ease-out;
 }
 
 @keyframes slide-in {
     0% {
-        right: -500em;
+        right: -9em;
         opacity: 0;
     }
     100% {
-        right: -492em;
+        right: -1em;
         opacity: 1;
     }
 }
 
 @keyframes slide-out {
     0% {
-        right: -492em;
+        right: -1em;
         opacity: 1;
     }
     100% {
-        right: -500em;
+        right: -9em;
         opacity: 0;
     }
 }
