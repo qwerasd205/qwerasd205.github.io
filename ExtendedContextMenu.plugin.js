@@ -22,7 +22,7 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.1";
+        return "0.0.2";
     }
     getAuthor() {
         return "Qwerasd";
@@ -42,11 +42,26 @@ class ExtendedContextMenu {
     oncontextmenu() {
         const menu = document.getElementsByClassName('da-contextMenu')[0];
         const reactInstance = this.getReactInstance(menu);
-        const message = reactInstance.return.memoizedProps.message;
+        const props = reactInstance.return.memoizedProps;
+        const message = props.message;
+        const target = props.target;
+        const finalGroup = menu.lastChild;
         if (message) {
-            const finalGroup = menu.lastChild;
-            finalGroup.appendChild(this.createButton('Copy Link', (function () {
+            finalGroup.appendChild(this.createButton('Copy Message Link', (function () {
                 this.copyText(this.getMessageURL(this.getServer(), this.getChannel(), message.id));
+                return true;
+            }).bind(this)));
+            finalGroup.appendChild(this.createButton('Copy Message', (function () {
+                this.copyText(message.content);
+                return true;
+            }).bind(this)));
+        }
+        if (target.className.includes('hljs') || target.tagName === 'CODE') {
+            let codeNode = target;
+            while (codeNode.tagName !== 'CODE' && codeNode.tagName === 'SPAN')
+                codeNode = codeNode.parentNode;
+            finalGroup.appendChild(this.createButton('Copy Codeblock', (function () {
+                this.copyText(codeNode.innerText);
                 return true;
             }).bind(this)));
         }
