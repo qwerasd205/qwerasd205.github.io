@@ -22,7 +22,7 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.2";
+        return "0.0.3";
     }
     getAuthor() {
         return "Qwerasd";
@@ -42,8 +42,11 @@ class ExtendedContextMenu {
     oncontextmenu() {
         const menu = document.getElementsByClassName('da-contextMenu')[0];
         const reactInstance = this.getReactInstance(menu);
+        if (!reactInstance)
+            return;
         const props = reactInstance.return.memoizedProps;
         const message = props.message;
+        const channel = props.channel;
         const target = props.target;
         const finalGroup = menu.lastChild;
         if (message) {
@@ -56,7 +59,13 @@ class ExtendedContextMenu {
                 return true;
             }).bind(this)));
         }
-        if (target.className.includes('hljs') || target.tagName === 'CODE') {
+        else if (channel) {
+            finalGroup.appendChild(this.createButton('Mention', (function () {
+                this.addTextToTextarea(`<#${channel.id}>`);
+                return true;
+            }).bind(this)));
+        }
+        if (target && target.className && (target.className.includes('hljs') || target.tagName === 'CODE')) {
             let codeNode = target;
             while (codeNode.tagName !== 'CODE' && codeNode.tagName === 'SPAN')
                 codeNode = codeNode.parentNode;
@@ -65,6 +74,7 @@ class ExtendedContextMenu {
                 return true;
             }).bind(this)));
         }
+        reactInstance.return.stateNode.props.onHeightUpdate();
     }
     createButton(text, func) {
         const button = document.createElement('div');
@@ -86,5 +96,10 @@ class ExtendedContextMenu {
     }
     getMessageURL(server, channel, message) {
         return `${document.location.origin}/channels/${server}/${channel}/${message}`;
+    }
+    addTextToTextarea(text) {
+        const textarea = document.getElementsByTagName('textarea')[0];
+        textarea.select();
+        document.execCommand('insertText', false, text);
     }
 }
