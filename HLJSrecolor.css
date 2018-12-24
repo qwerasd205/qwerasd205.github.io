@@ -1,0 +1,85 @@
+
+:root {
+    --hljs-recolor-comment: #969896;
+    --hljs-recolor-variable: #cc6666;
+    --hljs-recolor-number: #de935f;
+    --hljs-recolor-class: #f0c674;
+    --hljs-recolor-string: #b5bd68;
+    --hljs-recolor-color: #8abeb7;
+    --hljs-recolor-function: #81a2be;
+    --hljs-recolor-keyword: #b294bb;
+    --hljs-recolor-background: #1d1f21;
+    --hljs-recolor-default: #c5c8c6;
+}
+
+#app-mount .da-markup code .hljs-comment,
+#app-mount .da-markup code .hljs-title {
+    color: var(--hljs-recolor-comment);
+}
+
+#app-mount .da-markup code .hljs-variable,
+#app-mount .da-markup code .hljs-attribute,
+#app-mount .da-markup code .hljs-tag,
+#app-mount .da-markup code .hljs-regexp,
+#app-mount .da-markup code.hljs.ruby .hljs-constant,
+#app-mount .da-markup code.hljs.xml .hljs-tag .hljs-title,
+#app-mount .da-markup code.hljs.xml .hljs-pi,
+#app-mount .da-markup code.hljs.xml .hljs-doctype,
+#app-mount .da-markup code.hljs.html .hljs-doctype,
+#app-mount .da-markup code.hljs.css .hljs-id,
+#app-mount .da-markup code.hljs.css .hljs-class,
+#app-mount .da-markup code.hljs.css .hljs-pseudo {
+    color: var(--hljs-recolor-variable);
+}
+
+#app-mount .da-markup code .hljs-number,
+#app-mount .da-markup code .hljs-codeprocessor,
+#app-mount .da-markup code .hljs-built_in,
+#app-mount .da-markup code .hljs-literal,
+#app-mount .da-markup code .hljs-params,
+#app-mount .da-markup code .hljs-constant {
+    color: var(--hljs-recolor-number);
+}
+
+#app-mount .da-markup code .hljs-class,
+#app-mount .da-markup code.hljs.ruby .hljs-class .hljs-title,
+#app-mount .da-markup code.hljs.css .hljs-rules .hljs-attribute {
+    color: var(--hljs-recolor-class);
+}
+
+#app-mount .da-markup code .hljs-string,
+#app-mount .da-markup code .hljs-value,
+#app-mount .da-markup code .hljs-inheritance,
+#app-mount .da-markup code .hljs-header,
+#app-mount .da-markup code.hljs.ruby .hljs-symbol,
+#app-mount .da-markup code.hljs.xml .hljs-cdata {
+    color: var(--hljs-recolor-string);
+}
+
+#app-mount .da-markup code.hljs.css .hljs-hexcolor {
+    color: var(--hljs-recolor-color);
+}
+
+#app-mount .da-markup code .hljs-function,
+#app-mount .da-markup code.hljs.python .hljs-decorator,
+#app-mount .da-markup code.hljs.python .hljs-title,
+#app-mount .da-markup code.hljs.ruby .hljs-function .hljs-title,
+#app-mount .da-markup code.hljs.ruby .hljs-title .hljs-keyword,
+#app-mount .da-markup code.hljs.perl .hljs-sub,
+#app-mount .da-markup code.hljs.javascript .hljs-title,
+#app-mount .da-markup code.hljs.js .hljs-title,
+#app-mount .da-markup code.hljs.coffeescript .hljs-title {
+    color: var(--hljs-recolor-function);
+}
+
+#app-mount .da-markup code .hljs-keyword,
+#app-mount .da-markup code.hljs.javascript .hljs-function,
+#app-mount .da-markup code.hljs.js .hljs-function {
+    color: var(--hljs-recolor-keyword);
+}
+
+#app-mount .da-markup pre .hljs {
+    background: var(--hljs-recolor-background);
+    color: var(--hljs-recolor-default);
+    border-radius: 4px;
+}
