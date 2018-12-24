@@ -1,0 +1,18 @@
+//META{"name":"Tomorrow Night Eighties Theme for code Blocks","description":"Make codeblocks have the Tomorrow Night Eighties color theme.","author":"Qwerasd","version":"0.0.1"}*//{}
+
+/* ----------------------------------------------------------------------- */
+
+@import url(https://qwerasd205.github.io/HLJSrecolor.css);
+
+:root {
+    --hljs-recolor-comment:    #999999;
+    --hljs-recolor-variable:   #f2777a;
+    --hljs-recolor-number:     #f99157;
+    --hljs-recolor-class:      #ffcc66;
+    --hljs-recolor-string:     #99cc99;
+    --hljs-recolor-color:      #66cccc;
+    --hljs-recolor-function:   #6699cc;
+    --hljs-recolor-keyword:    #cc99cc;
+    --hljs-recolor-background: #2d2d2d;
+    --hljs-recolor-default:    #cccccc;
+}

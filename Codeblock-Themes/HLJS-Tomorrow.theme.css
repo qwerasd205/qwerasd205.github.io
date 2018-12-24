@@ -1,0 +1,18 @@
+//META{"name":"Tomorrow Theme for code Blocks","description":"Make codeblocks have the Tomorrow color theme.","author":"Qwerasd","version":"0.0.1"}*//{}
+
+/* ----------------------------------------------------------------------- */
+
+@import url(https://qwerasd205.github.io/HLJSrecolor.css);
+
+:root {
+    --hljs-recolor-comment:    #8e908c;
+    --hljs-recolor-variable:   #c82829;
+    --hljs-recolor-number:     #f5871f;
+    --hljs-recolor-class:      #eab700;
+    --hljs-recolor-string:     #718c00;
+    --hljs-recolor-color:      #3e999f;
+    --hljs-recolor-function:   #4271ae;
+    --hljs-recolor-keyword:    #8959a8;
+    --hljs-recolor-background: white;
+    --hljs-recolor-default:    #4d4d4c;
+}

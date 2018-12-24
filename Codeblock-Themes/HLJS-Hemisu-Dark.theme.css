@@ -1,0 +1,18 @@
+//META{"name":"Hemisu Dark Theme for code Blocks","description":"Make codeblocks have the Hemisu Dark color theme.","author":"Qwerasd","version":"0.0.1"}*//{}
+
+/* ----------------------------------------------------------------------- */
+
+@import url(https://qwerasd205.github.io/HLJSrecolor.css);
+
+:root {
+    --hljs-recolor-comment:    #777777;
+    --hljs-recolor-variable:   #d54e53;
+    --hljs-recolor-number:     #e78c45;
+    --hljs-recolor-class:      #ece1c8;
+    --hljs-recolor-string:     #b1d631;
+    --hljs-recolor-color:      #70c0b1;
+    --hljs-recolor-function:   #bbffaa;
+    --hljs-recolor-keyword:    #9fd3e6;
+    --hljs-recolor-background: black;
+    --hljs-recolor-default:    #eeeeee;
+}
