@@ -22,7 +22,7 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.3";
+        return "0.0.4";
     }
     getAuthor() {
         return "Qwerasd";
@@ -95,7 +95,7 @@ class ExtendedContextMenu {
         return button;
     }
     getMessageURL(server, channel, message) {
-        return `${document.location.origin}/channels/${server}/${channel}/${message}`;
+        return `${document.location.origin}/channels/${server ? server : '@me'}/${channel}/${message}`;
     }
     addTextToTextarea(text) {
         const textarea = document.getElementsByTagName('textarea')[0];
