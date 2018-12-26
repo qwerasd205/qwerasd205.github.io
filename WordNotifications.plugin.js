@@ -12,7 +12,7 @@ class WordNotifications {
         return "Get notifications when certain words are said.";
     }
     getVersion() {
-        return "0.0.3";
+        return "0.0.4";
     }
     getAuthor() {
         return "Qwerasd";
@@ -66,15 +66,15 @@ class WordNotifications {
             return;
         const channel = this.getChannelById(message.channel_id);
         const server = this.getServerById(message.guild_id);
-        const notification = new Notification(`${server.name} #${channel.name} (${this.getUnreadCount(channel.id)} unread)`, { body: `${author.username}: ${content}` });
+        const notification = new Notification(`${server.name ? `${server.name} #` : ''}${channel.name} (${this.getUnreadCount(channel.id)} unread)`, { body: `${author.username}: ${content}` });
         notification.addEventListener('click', _ => {
             this.goToMessage(server.id, channel.id, message.id);
         });
     }
     goToMessage(server, channel, message) {
         require('electron').remote.getCurrentWindow().focus();
-        this.transitionTo(`/channels/${server}/${channel}/${message}`);
-        this.transitionTo(`/channels/${server}/${channel}/${message}`);
+        this.transitionTo(`/channels/${server ? server : '@me'}/${channel}/${message}`);
+        this.transitionTo(`/channels/${server ? server : '@me'}/${channel}/${message}`);
     }
     getSettingsPanel() {
         const div = document.createElement('div');
