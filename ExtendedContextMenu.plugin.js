@@ -22,14 +22,12 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.4";
+        return "0.0.5";
     }
     getAuthor() {
         return "Qwerasd";
     }
     load() {
-        this.getChannel = BdApi.findModuleByProps('getChannelId').getChannelId;
-        this.getServer = BdApi.findModuleByProps('getGuildId').getGuildId;
         this.listener = this.oncontextmenu.bind(this);
         this.copyText = require('electron').clipboard.writeText;
     }
@@ -47,11 +45,12 @@ class ExtendedContextMenu {
         const props = reactInstance.return.memoizedProps;
         const message = props.message;
         const channel = props.channel;
+        const guildId = props.channel.guild_id;
         const target = props.target;
         const finalGroup = menu.lastChild;
         if (message) {
             finalGroup.appendChild(this.createButton('Copy Message Link', (function () {
-                this.copyText(this.getMessageURL(this.getServer(), this.getChannel(), message.id));
+                this.copyText(this.getMessageURL(guildId, channel.id, message.id));
                 return true;
             }).bind(this)));
             finalGroup.appendChild(this.createButton('Copy Message', (function () {
