@@ -22,7 +22,7 @@ class EditUploads {
         return "Edit image files before uploading.  Uses icons from icons8 https://icons8.com/";
     }
     getVersion() {
-        return "0.0.4";
+        return "0.0.5";
     }
     getAuthor() {
         return "Qwerasd";
@@ -30,7 +30,7 @@ class EditUploads {
     load() {
         this.colorWhiteClass = BdApi.findModuleByProps('colorWhite').colorWhite.split(' ')[0];
         this.lookLinkClass = BdApi.findModuleByProps('lookLink').lookLink.split(' ')[0];
-        this.uploadModalClass = BdApi.findModuleByProps('uploadModal').uploadModal;
+        this.uploadModalClass = BdApi.findModuleByProps('uploadModal').uploadModal.split(' ')[0];
         this.descriptionClass = BdApi.findModuleByProps('file', 'filename', 'comment', 'description').description;
         this.iconClass = BdApi.findModuleByProps('file', 'filename', 'comment', 'description').icon;
         this.icons = {
@@ -336,7 +336,7 @@ class EditUploads {
         };
     }
     start() {
-        this.cancelPatch = BdApi.monkeyPatch(BdApi.findModule(m => m.displayName === 'Upload').prototype, 'render', {
+        this.cancelPatch = BdApi.monkeyPatch(BdApi.findModule(m => m.displayName === 'UploadModal').prototype, 'render', {
             after: _ => {
                 requestAnimationFrame(this.addButtonToDescription.bind(this));
             }
@@ -782,10 +782,10 @@ class EditUploads {
         const reactInstance = this.getReactInstance(uploadModal);
         const stateNode = reactInstance.return.stateNode;
         const icon = uploadModal.getElementsByClassName(this.iconClass)[0];
-        this.editFile(reactInstance.return.stateNode.state.upload.file, modalWrapper)
+        this.editFile(reactInstance.return.stateNode.props.upload.file, modalWrapper)
             .then((newFile) => {
             stateNode.setState({
-                upload: Object.assign(stateNode.state.upload, {
+                upload: Object.assign(stateNode.props.upload, {
                     file: newFile,
                     size: newFile.size
                 }),
@@ -808,7 +808,7 @@ class EditUploads {
     }
     addButtonToDescription() {
         const reactInstace = this.getReactInstance(document.getElementsByClassName(this.uploadModalClass)[0]);
-        if (!(reactInstace && reactInstace.return.stateNode.state.upload && reactInstace.return.stateNode.state.upload.isImage))
+        if (!(reactInstace && reactInstace.return.stateNode.props.upload && reactInstace.return.stateNode.props.upload.isImage))
             return;
         if (document.getElementById('EditUploadsEditButton'))
             return;
