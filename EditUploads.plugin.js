@@ -22,7 +22,7 @@ class EditUploads {
         return "Edit image files before uploading.  Uses icons from icons8 https://icons8.com/";
     }
     getVersion() {
-        return "0.0.5";
+        return "0.0.6";
     }
     getAuthor() {
         return "Qwerasd";
@@ -282,15 +282,32 @@ class EditUploads {
                     ctx.strokeRect(x, y, w, h);
                 },
                 mouseUp: function (canvas, ctx, location, helpers) {
-                    const [x, y, w, h] = [this.startLoc.x, this.startLoc.y, location.x - this.startLoc.x, location.y - this.startLoc.y];
+                    const [x, y, w, h] = [
+                        this.startLoc.x >= location.x ? location.x : this.startLoc.x,
+                        this.startLoc.y >= location.y ? location.y : this.startLoc.y,
+                        Math.abs(location.x - this.startLoc.x),
+                        Math.abs(location.y - this.startLoc.y)
+                    ];
+                    if (w < 2 || h < 2)
+                        return;
                     canvas.width = w;
                     canvas.height = h;
                     ctx.drawImage(this.imageCopy, x, y, w, h, 0, 0, w, h);
                     this.imageCopy.width = w;
                     this.imageCopy.height = h;
                     this.imageCopyCtx.drawImage(canvas, 0, 0);
+                    this.greyed.width = canvas.width;
+                    this.greyed.height = canvas.height;
+                    this.greyedCtx.drawImage(canvas, 0, 0);
+                    this.greyedCtx.globalAlpha = 0.6;
+                    this.greyedCtx.fillRect(0, 0, canvas.width, canvas.height);
+                    this.greyedCtx.globalAlpha = 1;
                     this.eraser.crop = [x, y, w, h];
                     helpers.fitCanvas(canvas, canvas.parentNode);
+                    ctx.lineWidth = Math.max(1, 4 * (canvas.width / parseInt(canvas.style.width)));
+                    ctx.lineJoin = "round";
+                    ctx.lineCap = "round";
+                    ctx.strokeStyle = 'white';
                 }
             }
         ];
@@ -500,6 +517,9 @@ class EditUploads {
         this.cancelPatch();
         BdApi.clearCSS('EditUploads');
     }
+    clamp(num, min, max) {
+        return Math.min(Math.max(num, min), max);
+    }
     createIcon(icon, label) {
         const iconWrapper = document.createElement('span');
         const img = document.createElement('img');
@@ -656,7 +676,9 @@ class EditUploads {
             const { left: x, top: y } = canvas.getBoundingClientRect();
             const canvasX = (e.clientX - x) * scaleFactor;
             const canvasY = (e.clientY - y) * scaleFactor;
-            this.currentTool.mouseDown.bind(this.currentTool)(canvas, ctx, { x: canvasX, y: canvasY }, this.toolHelpers);
+            const boundedX = this.clamp(canvasX, 0, canvas.width);
+            const boundedY = this.clamp(canvasY, 0, canvas.height);
+            this.currentTool.mouseDown.bind(this.currentTool)(canvas, ctx, { x: boundedX, y: boundedY }, this.toolHelpers);
         });
         const mousemoveHandler = e => {
             if (!this.currentTool)
@@ -666,7 +688,9 @@ class EditUploads {
                 const { left: x, top: y } = canvas.getBoundingClientRect();
                 const canvasX = (e.clientX - x) * scaleFactor;
                 const canvasY = (e.clientY - y) * scaleFactor;
-                this.currentTool.mouseMove.bind(this.currentTool)(canvas, ctx, { x: canvasX, y: canvasY }, this.toolHelpers);
+                const boundedX = this.clamp(canvasX, 0, canvas.width);
+                const boundedY = this.clamp(canvasY, 0, canvas.height);
+                this.currentTool.mouseMove.bind(this.currentTool)(canvas, ctx, { x: boundedX, y: boundedY }, this.toolHelpers);
             }
         };
         document.body.addEventListener('mousemove', mousemoveHandler);
@@ -680,7 +704,9 @@ class EditUploads {
             const { left: x, top: y } = canvas.getBoundingClientRect();
             const canvasX = (e.clientX - x) * scaleFactor;
             const canvasY = (e.clientY - y) * scaleFactor;
-            this.currentTool.mouseUp.bind(this.currentTool)(canvas, ctx, { x: canvasX, y: canvasY }, this.toolHelpers);
+            const boundedX = this.clamp(canvasX, 0, canvas.width);
+            const boundedY = this.clamp(canvasY, 0, canvas.height);
+            this.currentTool.mouseUp.bind(this.currentTool)(canvas, ctx, { x: boundedX, y: boundedY }, this.toolHelpers);
         };
         document.body.addEventListener('mouseup', mouseupHandler);
         return [{ up: mouseupHandler, move: mousemoveHandler }, undoFunc, redoFunc];
