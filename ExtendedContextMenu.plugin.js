@@ -22,7 +22,7 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.5";
+        return "0.0.6";
     }
     getAuthor() {
         return "Qwerasd";
@@ -49,10 +49,6 @@ class ExtendedContextMenu {
         const target = props.target;
         const finalGroup = menu.lastChild;
         if (message) {
-            finalGroup.appendChild(this.createButton('Copy Message Link', (function () {
-                this.copyText(this.getMessageURL(guildId, channel.id, message.id));
-                return true;
-            }).bind(this)));
             finalGroup.appendChild(this.createButton('Copy Message', (function () {
                 this.copyText(message.content);
                 return true;
