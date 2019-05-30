@@ -22,7 +22,7 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.5";
+        return "0.0.6";
     }
     getAuthor() {
         return "Qwerasd";
@@ -30,6 +30,8 @@ class ExtendedContextMenu {
     load() {
         this.listener = this.oncontextmenu.bind(this);
         this.copyText = require('electron').clipboard.writeText;
+        const devModeModule = BdApi.findModuleByProps('developerMode');
+        this.developerMode = () => devModeModule.developerMode;
     }
     start() {
         document.addEventListener('contextmenu', this.listener);
@@ -43,24 +45,34 @@ class ExtendedContextMenu {
         if (!reactInstance)
             return;
         const props = reactInstance.return.memoizedProps;
+        if (!props)
+            return;
         const message = props.message;
         const channel = props.channel;
-        const guildId = props.channel.guild_id;
+        const guildId = channel && props.channel.guild_id;
         const target = props.target;
         const finalGroup = menu.lastChild;
         if (message) {
-            finalGroup.appendChild(this.createButton('Copy Message Link', (function () {
-                this.copyText(this.getMessageURL(guildId, channel.id, message.id));
-                return true;
-            }).bind(this)));
+            if (!this.developerMode()) {
+                finalGroup.appendChild(this.createButton('Copy Message Link', (function () {
+                    this.copyText(this.getMessageURL(guildId, channel.id, message.id));
+                    return true;
+                }).bind(this)));
+            }
             finalGroup.appendChild(this.createButton('Copy Message', (function () {
                 this.copyText(message.content);
                 return true;
             }).bind(this)));
         }
         else if (channel) {
-            finalGroup.appendChild(this.createButton('Mention', (function () {
-                this.addTextToTextarea(`<#${channel.id}>`);
+            if (channel.type !== 2) {
+                finalGroup.appendChild(this.createButton('Mention', (function () {
+                    this.addTextToTextarea(`<#${channel.id}>`);
+                    return true;
+                }).bind(this)));
+            }
+            finalGroup.appendChild(this.createButton('Copy Channel Link', (function () {
+                this.copyText(this.getChannelURL(guildId, channel.id));
                 return true;
             }).bind(this)));
         }
@@ -73,7 +85,7 @@ class ExtendedContextMenu {
                 return true;
             }).bind(this)));
         }
-        reactInstance.return.stateNode.props.onHeightUpdate();
+        reactInstance.return.stateNode && reactInstance.return.stateNode.props.onHeightUpdate();
     }
     createButton(text, func) {
         const button = document.createElement('div');
@@ -94,7 +106,10 @@ class ExtendedContextMenu {
         return button;
     }
     getMessageURL(server, channel, message) {
-        return `${document.location.origin}/channels/${server ? server : '@me'}/${channel}/${message}`;
+        return `${this.getChannelURL(server, channel)}/${message}`;
+    }
+    getChannelURL(server, channel) {
+        return `${document.location.origin}/channels/${server ? server : '@me'}/${channel}`;
     }
     addTextToTextarea(text) {
         const textarea = document.getElementsByTagName('textarea')[0];
