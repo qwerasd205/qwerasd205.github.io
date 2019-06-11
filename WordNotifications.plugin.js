@@ -12,7 +12,7 @@ class WordNotifications {
         return "Get notifications when certain words are said.";
     }
     getVersion() {
-        return "0.0.4";
+        return "0.0.5";
     }
     getAuthor() {
         return "Qwerasd";
@@ -55,7 +55,7 @@ class WordNotifications {
         let content = message.content;
         let proceed = false;
         this.words.forEach(word => {
-            const regex = new RegExp(`\\b${word}\\b`, 'gi');
+            const regex = new RegExp(`\\b\\${word.split('').join('\\')}\\b`, 'gi');
             const replaced = content.replace(regex, match => `→${match}←`);
             if (replaced !== content) {
                 proceed = true;
