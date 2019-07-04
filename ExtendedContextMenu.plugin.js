@@ -22,12 +22,15 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.6";
+        return "0.0.7";
     }
     getAuthor() {
         return "Qwerasd";
     }
     load() {
+        this.contextMenuClass = BdApi.findModuleByProps('contextMenu').contextMenu.split(' ')[0];
+        this.hintClass = BdApi.findModuleByProps('hint').hint;
+        this.itemClass = BdApi.findModuleByProps('item').item;
         this.listener = this.oncontextmenu.bind(this);
         this.copyText = require('electron').clipboard.writeText;
         const devModeModule = BdApi.findModuleByProps('developerMode');
@@ -40,7 +43,7 @@ class ExtendedContextMenu {
         document.removeEventListener('contextmenu', this.listener);
     }
     oncontextmenu() {
-        const menu = document.getElementsByClassName('da-contextMenu')[0];
+        const menu = document.getElementsByClassName(this.contextMenuClass)[0];
         const reactInstance = this.getReactInstance(menu);
         if (!reactInstance)
             return;
@@ -91,7 +94,7 @@ class ExtendedContextMenu {
         const button = document.createElement('div');
         button.tabIndex = 0;
         button.setAttribute('role', 'button');
-        button.className = 'item-1Yvehc da-item extendedContextMenu';
+        button.className = this.itemClass + ' extendedContextMenu';
         button.addEventListener('click', e => {
             const close = func(e);
             if (close)
@@ -100,7 +103,7 @@ class ExtendedContextMenu {
         const span = document.createElement('span');
         span.innerText = text;
         const hint = document.createElement('div');
-        hint.className = 'hint-22uc-R da-hint';
+        hint.className = this.hintClass;
         button.appendChild(span);
         button.appendChild(hint);
         return button;
