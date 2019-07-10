@@ -12,7 +12,7 @@ class WordNotifications {
         return "Get notifications when certain words are said.";
     }
     getVersion() {
-        return "0.0.5";
+        return "0.0.6";
     }
     getAuthor() {
         return "Qwerasd";
@@ -35,6 +35,9 @@ class WordNotifications {
     stop() {
         this.cancelPatch();
     }
+    escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
     dispatch(data) {
         if (!this.words.length)
             return;
@@ -55,7 +58,7 @@ class WordNotifications {
         let content = message.content;
         let proceed = false;
         this.words.forEach(word => {
-            const regex = new RegExp(`\\b\\${word.split('').join('\\')}\\b`, 'gi');
+            const regex = new RegExp(`\\b${this.escapeRegex(word)}\\b`, 'gi');
             const replaced = content.replace(regex, match => `→${match}←`);
             if (replaced !== content) {
                 proceed = true;
@@ -74,7 +77,7 @@ class WordNotifications {
     goToMessage(server, channel, message) {
         require('electron').remote.getCurrentWindow().focus();
         this.transitionTo(`/channels/${server ? server : '@me'}/${channel}/${message}`);
-        this.transitionTo(`/channels/${server ? server : '@me'}/${channel}/${message}`);
+        requestAnimationFrame(() => this.transitionTo(`/channels/${server ? server : '@me'}/${channel}/${message}`));
     }
     getSettingsPanel() {
         const div = document.createElement('div');
@@ -94,6 +97,8 @@ class WordNotifications {
         words.value = this.words.join(', ');
         words.style.width = '100%';
         words.style.minHeight = '6ch';
+        words.style.color = 'black';
+        words.style.backgroundColor = 'white';
         ignoreT.innerText = 'Ignored Servers';
         ignoreT.style.marginTop = '0.5ch';
         ignoreT.style.marginBottom = '0.25ch';
@@ -101,6 +106,8 @@ class WordNotifications {
         ignore.value = this.blacklist.join(', ');
         ignore.style.width = '100%';
         ignore.style.minHeight = '6ch';
+        ignore.style.color = 'black';
+        ignore.style.backgroundColor = 'white';
         button.addEventListener('click', _ => {
             this.words = words.value.split(',').map(e => e.trim());
             BdApi.saveData('WordNotifications', 'words', this.words);
