@@ -1,9 +1,5 @@
 //META{"name":"WordNotifications"}*//
 
-// !!! Hey there! If you didn't come here from the BetterDiscord Discord server ( https://discord.gg/2HScm8j )  !!! //
-// !!! then please do not use whatever you were using that led you here, getting plugins from places other than !!! //
-// !!! the #plugin repo channel in the BD server can be dangerous, as they can be malicious and do bad things.  !!! //
-
 class WordNotifications {
     getName() {
         return "Word Notifications";
@@ -12,7 +8,7 @@ class WordNotifications {
         return "Get notifications when certain words are said.";
     }
     getVersion() {
-        return "0.0.6";
+        return "0.0.7";
     }
     getAuthor() {
         return "Qwerasd";
@@ -58,7 +54,7 @@ class WordNotifications {
         let content = message.content;
         let proceed = false;
         this.words.forEach(word => {
-            const regex = new RegExp(`\\b${this.escapeRegex(word)}\\b`, 'gi');
+            const regex = new RegExp(`${this.escapeRegex(word)}`, 'gi');
             const replaced = content.replace(regex, match => `→${match}←`);
             if (replaced !== content) {
                 proceed = true;
