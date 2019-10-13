@@ -1,37 +1,40 @@
-//META{"name":"HLJS Names","description":"Display the name of the syntax highlighting language for a codeblock on hover.","author":"Qwerasd","version":"1.0.2"}*//{}
+//META{"name":"HLJS Names","description":"Display the name of the syntax highlighting language for a codeblock on hover.","author":"Qwerasd","version":"1.1.0"}*//{}
 
 /* ----------------------------------------------------------------------- */
 
-#app-mount .da-container .da-message .da-markup pre {
+body #app-mount .da-container .da-markup pre {
     overflow: hidden;
     position: relative;
     transition: padding-top 0.2s linear;
 }
 
-#app-mount .da-container .da-message .da-markup pre .hljs::before {
+body #app-mount .da-container .da-markup pre .hljs::before {
     content: attr(class);
+    white-space: pre;
+    text-align: right;
     position: absolute;
-    top: 0.1em;
-    right: -1em;
+    color: white;
+    top: 2.5px;
+    right: 2.5px;
     height: 1.25em;
+    line-height: 1.25;
+    padding: 0 0.5em;
     overflow: hidden;
-    text-indent: -74.25ch;
+    text-indent: -75ch;
     font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #eee;
-    border-radius: 5px 0 0 5px;
-    width: 9em;
+    background-color: rgba(204, 204, 204, 0.1);
+    border-radius: 5px;
 }
 
-#app-mount .da-container .da-message .da-markup pre .hljs[class$=hljs]::before {
+body #app-mount .da-container .da-markup pre .hljs[class$="hljs"]::before {
     content: none;
 }
 
-#app-mount .da-container .da-message .da-markup pre:hover .hljs::before {
+body #app-mount .da-container .da-markup pre:hover .hljs::before {
     animation: slide-in 0.2s linear;
 }
 
-#app-mount .da-container .da-message .da-markup pre:not(:hover) .hljs::before {
+body #app-mount .da-container .da-markup pre:not(:hover) .hljs::before {
     right: -9em;
     animation: slide-out 0.2s ease-out;
 }
@@ -41,8 +44,9 @@
         right: -9em;
         opacity: 0;
     }
+
     100% {
-        right: -1em;
+        right: 2.5px;
         opacity: 1;
     }
 }
@@ -52,6 +56,7 @@
         right: -1em;
         opacity: 1;
     }
+
     100% {
         right: -9em;
         opacity: 0;
