@@ -22,7 +22,7 @@ class EditUploads {
         return "Edit image files before uploading.  Uses icons from icons8 https://icons8.com/";
     }
     getVersion() {
-        return "0.0.6";
+        return "0.0.7";
     }
     getAuthor() {
         return "Qwerasd";
@@ -176,7 +176,7 @@ class EditUploads {
                     this.blurred = document.createElement('canvas');
                     this.blurredCtx = this.blurred.getContext('2d');
                 },
-                selected: async function (canvas, ctx, helpers) {
+                selected: function (canvas, ctx, helpers) {
                     ctx.lineWidth = Math.max(1, 2 * (canvas.width / parseInt(canvas.style.width)));
                     ctx.lineJoin = "round";
                     ctx.lineCap = "round";
@@ -184,7 +184,7 @@ class EditUploads {
                     this.imageCopy.width = canvas.width;
                     this.imageCopy.height = canvas.height;
                     this.imageCopyCtx.drawImage(canvas, 0, 0);
-                    const blurredCanvas = await helpers.blurImage(canvas, this.settings.amount.value);
+                    const blurredCanvas = helpers.blurImage(canvas, this.settings.amount.value);
                     this.blurred.width = canvas.width;
                     this.blurred.height = canvas.height;
                     this.blurredCtx.putImageData(blurredCanvas, 0, 0, 0, 0, canvas.width, canvas.height);
@@ -314,22 +314,18 @@ class EditUploads {
         this.restoreToolDefaults();
         this.mouseCurrentlyDown = false;
         this.toolHelpers = {
-            getDPI: async function () {
-                return new Promise(resolve => {
-                    const div = document.createElement('div');
-                    div.style.width = '1in';
-                    div.style.height = '0';
-                    document.body.appendChild(div);
-                    const dpi = div.offsetWidth * window.devicePixelRatio;
-                    div.remove();
-                    require('electron').remote.getCurrentWindow().webContents.getZoomFactor(f => {
-                        resolve(dpi / f);
-                    });
-                });
+            getDPI: function () {
+                const div = document.createElement('div');
+                div.style.width = '1in';
+                div.style.height = '0';
+                document.body.appendChild(div);
+                const dpi = div.offsetWidth * window.devicePixelRatio;
+                div.remove();
+                return dpi;
             },
-            blurImage: async function (image, amount) {
+            blurImage: function (image, amount) {
                 const { width, height } = image;
-                const scaleFactor = await this.getDPI();
+                const scaleFactor = this.getDPI();
                 const dpiFactor = scaleFactor / 96;
                 const canvas = document.createElement('canvas');
                 canvas.width = width;
