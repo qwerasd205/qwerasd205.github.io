@@ -22,7 +22,7 @@ class ExtendedContextMenu {
         return "Add useful stuff to the context menu.";
     }
     getVersion() {
-        return "0.0.7";
+        return "0.0.9";
     }
     getAuthor() {
         return "Qwerasd";
@@ -31,6 +31,7 @@ class ExtendedContextMenu {
         this.contextMenuClass = BdApi.findModuleByProps('contextMenu').contextMenu.split(' ')[0];
         this.hintClass = BdApi.findModuleByProps('hint').hint;
         this.itemClass = BdApi.findModuleByProps('item').item;
+        this.clickableClass = BdApi.findModuleByProps('clickable').clickable;
         this.listener = this.oncontextmenu.bind(this);
         this.copyText = require('electron').clipboard.writeText;
         const devModeModule = BdApi.findModuleByProps('developerMode');
@@ -88,13 +89,13 @@ class ExtendedContextMenu {
                 return true;
             }).bind(this)));
         }
-        reactInstance.return.stateNode && reactInstance.return.stateNode.props.onHeightUpdate();
+        props.onHeightUpdate();
     }
     createButton(text, func) {
         const button = document.createElement('div');
         button.tabIndex = 0;
         button.setAttribute('role', 'button');
-        button.className = this.itemClass + ' extendedContextMenu';
+        button.className = this.itemClass + ' ' + this.clickableClass + ' extendedContextMenu';
         button.addEventListener('click', e => {
             const close = func(e);
             if (close)
