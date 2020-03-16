@@ -22,7 +22,7 @@ class EditUploads {
         return "Edit image files before uploading.  Uses icons from icons8 https://icons8.com/";
     }
     getVersion() {
-        return "0.0.7";
+        return "0.0.8";
     }
     getAuthor() {
         return "Qwerasd";
@@ -31,6 +31,7 @@ class EditUploads {
         this.colorWhiteClass = BdApi.findModuleByProps('colorWhite').colorWhite.split(' ')[0];
         this.lookLinkClass = BdApi.findModuleByProps('lookLink').lookLink.split(' ')[0];
         this.uploadModalClass = BdApi.findModuleByProps('uploadModal').uploadModal.split(' ')[0];
+        this.textAreaClass = BdApi.findModuleByProps('slateTextArea').slateTextArea.split(' ')[0];
         this.descriptionClass = BdApi.findModuleByProps('file', 'filename', 'comment', 'description').description;
         this.iconClass = BdApi.findModuleByProps('file', 'filename', 'comment', 'description').icon;
         this.icons = {
@@ -713,7 +714,8 @@ class EditUploads {
             document.removeEventListener('keydown', keyDownHandler);
             document.body.removeEventListener('mouseup', handlers.up);
             document.body.removeEventListener('mousemove', handlers.move);
-            document.getElementsByClassName(this.uploadModalClass)[0].getElementsByTagName('textarea')[0].focus();
+            //@ts-ignore
+            document.getElementsByClassName(this.uploadModalClass)[0].getElementsByClassName(this.textAreaClass)[0].focus();
         };
         const modal = document.createElement('div');
         modal.id = 'EditUploadsModal';
