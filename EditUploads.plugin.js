@@ -5,16 +5,6 @@
 // !!! the #plugin repo channel in the BD server can be dangerous, as they can be malicious and do bad things.  !!! //
 
 class EditUploads {
-    constructor() {
-        // vv Stole this function from Zere's Plugin Library vv //
-        this.getReactInstance = function (node) {
-            if (!(node instanceof jQuery) && !(node instanceof Element))
-                return undefined;
-            var domNode = node instanceof jQuery ? node[0] : node;
-            return domNode[Object.keys(domNode).find((key) => key.startsWith("__reactInternalInstance"))];
-        };
-        // ^^ Stole this function from Zere's Plugin Library ^^ //
-    }
     getName() {
         return "Edit Uploads";
     }
@@ -22,7 +12,7 @@ class EditUploads {
         return "Edit image files before uploading.  Uses icons from icons8 https://icons8.com/";
     }
     getVersion() {
-        return "0.0.8";
+        return "0.0.9";
     }
     getAuthor() {
         return "Qwerasd";
@@ -784,7 +774,7 @@ class EditUploads {
                 canvas.width = image.width;
                 canvas.height = image.height;
                 ctx.drawImage(image, 0, 0);
-                modalWrapper.appendChild(this.createModal(canvas, ctx, _ => {
+                modalWrapper.parentNode.appendChild(this.createModal(canvas, ctx, _ => {
                     canvas.toBlob(blob => {
                         resolve(new File([blob], file.name, {
                             type: file.type
@@ -838,5 +828,8 @@ class EditUploads {
             return;
         const desc = document.getElementsByClassName(this.descriptionClass)[0];
         desc.appendChild(this.createButton());
+    }
+    getReactInstance(element) {
+        return element.__reactInternalInstance$;
     }
 }
