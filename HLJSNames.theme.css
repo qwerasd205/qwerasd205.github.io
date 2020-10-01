@@ -3,7 +3,7 @@
  * @description Displays the name of the syntax hilighting language for a codeblock on hover.
  * @author Qwerasd
  * @authorId 140188899585687552
- * @version 1.2.0
+ * @version 1.2.1
  */
 
  .hljs {
@@ -28,6 +28,8 @@
     opacity: 0;
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
     border-radius: 5px;
+    user-select: none;
+    pointer-events: none;
 }
 
 .hljs:hover::after {
